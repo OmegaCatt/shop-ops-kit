@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Ukázková kontrola e-shopových dat a objednávek na fiktivních datech.">
+  <title>Shop Ops Kit — kontrola e-shopových dat</title>
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/app.mjs"></script>
+</head>
+<body>
+  <div class="shell">
+    <aside class="rail">
+      <a class="brand" href="/" aria-label="Shop Ops Kit, úvod"><span class="brand-mark">S<span>·</span>O</span><span>SHOP OPS<br><strong>KIT</strong></span></a>
+      <div class="rail-caption">PRACOVNÍ PROSTOR</div>
+      <nav aria-label="Nástroje">
+        <button class="nav-item selected" data-view="catalog" aria-current="page"><span class="nav-icon">▦</span><span>Katalog a trhy</span></button>
+        <button class="nav-item" data-view="orders"><span class="nav-icon">⇄</span><span>Objednávky</span></button>
+      </nav>
+      <div class="rail-bottom"><span class="demo-dot"></span> Ukázková data<br><small>Žádné spojení s e-shopem</small></div>
+    </aside>
+    <div class="workspace">
+      <header class="topbar"><span>PORTFOLIO / E-COMMERCE OPERACE</span><span class="topbar-right">LOKÁLNÍ DEMO <span class="separator">/</span> V1.0</span></header>
+      <main id="main">
+        <section class="intro">
+          <div><p class="eyebrow">KONTROLA DAT · 01 / 02</p><h1 id="view-title">Katalog pod kontrolou<span class="period">.</span></h1><p id="view-description" class="lede">Najděte nesrovnalosti v produktovém exportu dřív, než se dostanou na další trh.</p></div>
+          <div class="intro-actions"><button id="reset-button" class="button secondary" type="button">Obnovit ukázku</button><button id="export-button" class="button primary" type="button">Stáhnout report <span aria-hidden="true">↗</span></button></div>
+        </section>
+        <section class="notice" aria-label="Upozornění"><span class="notice-icon">i</span><p><strong>Fiktivní ukázka.</strong> Produkty, objednávky i zásilky jsou připravená testovací data. Nástroj nečte žádná firemní data.</p></section>
+        <section class="metrics" id="metrics" aria-label="Souhrn"></section>
+        <section class="content-grid">
+          <div class="main-column">
+            <section class="panel" id="catalog-panel">
+              <div class="panel-head"><div><p class="panel-kicker">VSTUPNÍ DATA</p><h2>Produktový export</h2></div><label class="button outline upload-button">Importovat CSV <input id="catalog-file" type="file" accept=".csv,text/csv" hidden></label></div>
+              <div class="filterbar"><div class="segmented" aria-label="Filtr trhů"><button type="button" class="active" data-market="ALL">Vše</button><button type="button" data-market="CZ">CZ</button><button type="button" data-market="SK">SK</button><button type="button" data-market="DE">DE</button></div><span id="catalog-count" class="count-label"></span></div>
+              <div class="table-wrap"><table><thead><tr><th>ŘÁDEK</th><th>SKU / NÁZEV</th><th>TRH</th><th>CENA</th><th>SKLAD</th></tr></thead><tbody id="catalog-table"></tbody></table></div>
+            </section>
+            <section class="panel hidden" id="orders-panel">
+              <div class="panel-head"><div><p class="panel-kicker">POROVNÁNÍ SYSTÉMŮ</p><h2>Objednávky × zásilky</h2></div><span class="tag">DEMO REPLAY</span></div>
+              <p class="panel-description">Každá událost zásilky se započítá jen jednou podle ID. Chybné mapování a rozdíly v množství zůstanou viditelné ke kontrole.</p>
+              <div class="table-wrap"><table><thead><tr><th>OBJEDNÁVKA</th><th>STAV</th><th>PRODUKT</th><th>OBJEDNÁNO</th><th>ODESLÁNO*</th></tr></thead><tbody id="orders-table"></tbody></table></div>
+              <p class="table-note">* Přehled ukazuje započítané unikátní události se shodným SKU. Zásilka může přesto vyžadovat kontrolu.</p>
+            </section>
+          </div>
+          <div class="side-column">
+            <section class="panel findings-panel"><div class="panel-head"><div><p class="panel-kicker">KONTROLNÍ FRONTA</p><h2>Zjištění <span id="finding-count" class="heading-count"></span></h2></div></div><div class="finding-filters"><button class="active" data-severity="all" type="button">Všechna</button><button data-severity="high" type="button">Důležitá</button><button data-severity="medium" type="button">K ověření</button></div><div id="findings" class="finding-list"></div></section>
+            <section class="panel method-panel"><p class="panel-kicker">JAK TO FUNGUJE</p><h2>Člověk rozhoduje</h2><p>Nástroj označí podezřelé záznamy a uvede původní řádek nebo ID události. U ceny, překladu a skladu nenavrhuje tichou opravu bez ověření zdroje.</p><div class="method-line"><span>01</span> Import / načtení dat</div><div class="method-line"><span>02</span> Kontrola pravidly</div><div class="method-line"><span>03</span> Potvrzení člověkem</div></section>
+          </div>
+        </section>
+      </main>
+      <footer>SHOP OPS KIT <span>Fiktivní data · pro demonstrační účely</span></footer>
+    </div>
+  </div>
+  <div id="toast" role="status" aria-live="polite" class="toast hidden"></div>
+</body>
+</html>
