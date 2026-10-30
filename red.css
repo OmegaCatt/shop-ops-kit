@@ -1,0 +1,66 @@
+/* Red identity for the e-commerce operations dashboard. */
+:root { color: #30282a; background: #faf7f6; }
+button:focus-visible, a:focus-visible, label:focus-within { outline-color: #d3676b; }
+.rail { background: #3b2026; color: #f9ecec; }
+.brand-mark { border-color: #a57779; }
+.brand-mark span { color: #efb0a9; }
+.rail-caption { color: #c69da1; }
+.nav-item { color: #ebd3d5; }
+.nav-item:hover { background: #553039; }
+.nav-item.selected { background: #84404a; color: #fff; }
+.rail-bottom { border-color: #70454c; color: #f2dde0; }
+.rail-bottom small { color: #cba7ab; }
+.demo-dot { background: #e4a3a6; }
+
+.topbar { border-color: #eadfdf; color: #8d777a; }
+.topbar-right { color: #836b70; }
+.separator { color: #d7c8ca; }
+.eyebrow, .panel-kicker { color: #9d3e49; }
+h1, .panel h2 { color: #2e2527; }
+.period { color: #ba4a52; }
+.lede { color: #77686b; }
+.primary { background: #a43e49; border-color: #a43e49; }
+.primary:hover { background: #87313b; }
+.secondary { border-color: #e5d8da; color: #5d454a; }
+.secondary:hover, .outline:hover { background: #fbefef; }
+.outline { border-color: #d9bfc2; color: #8e3540; }
+.notice { background: #fff1f0; border-color: #efd5d4; }
+.notice-icon { background: #e7a5a4; color: #592830; }
+.notice p { color: #755358; }
+.notice strong { color: #7f303b; }
+
+.metric, .panel { border-color: #e9dfe0; }
+.metric .label, .metric .sub { color: #947e81; }
+.metric .number { color: #35282b; }
+.metric.alert .number { color: #a83f48; }
+.heading-count, .count-label { color: #947e81; }
+.filterbar { border-color: #f0e8e8; }
+.segmented { background: #f7eeee; }
+.segmented button { color: #927c80; }
+.segmented button.active { color: #973c46; box-shadow: 0 1px 4px #5a252517; }
+th { background: #fcf9f9; color: #9c8588; border-color: #efe5e6; }
+td { color: #67585b; border-color: #f2eaea; }
+tbody tr:hover { background: #fff8f7; }
+.sku { color: #392b2e; }
+.title-sub { color: #a08e91; }
+.market-pill { color: #8e3b46; background: #fae8e9; }
+.market-pill.de { color: #72556f; background: #f4eaf3; }
+.market-pill.sk { color: #815c48; background: #f8ede4; }
+.flag, .severity { color: #b3464b; }
+.severity.medium { color: #926b43; }
+.finding-filters { border-color: #f0e8e8; }
+.finding-filters button { color: #927e81; }
+.finding-filters button.active { color: #923842; background: #fae8e9; }
+.finding { border-color: #f0e8e8; }
+.finding h3 { color: #403034; }
+.finding p { color: #827073; }
+.finding .action, .review-button { color: #8d3d48; }
+.finding.reviewed { background: #fdfafa; }
+.finding.reviewed h3 { color: #9b868a; }
+.method-panel p:not(.panel-kicker), .panel-description { color: #827073; }
+.method-line { border-color: #f0e8e8; color: #604a4e; }
+.method-line span { color: #bb9ea3; }
+.table-note, .empty-state { color: #927e81; }
+.tag { color: #923d46; background: #fae8e9; }
+footer { border-color: #eadfdf; color: #a78f92; }
+.toast { background: #542932; box-shadow: 0 10px 35px #3b202628; }

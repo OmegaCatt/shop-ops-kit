@@ -30,9 +30,14 @@ Požadované sloupce: `sku;market;title;price;currency;stock;url`. Trhy: CZ (CZK
 - Zjištění zásilky bez objednávky, nesouladu SKU, expedice zrušené objednávky a chybějícího odeslání zaplacené objednávky.
 - Export kontrolního reportu. Tento modul používá připravená data; nemá import skutečných objednávek.
 
+## Co uvidíte po spuštění
+
+Výchozí katalog obsahuje 5 produktů na 15 řádcích a 5 zjištění (3 důležitá). Ukázka objednávek obsahuje 6 objednávek a 7 expedičních událostí; jedna událost má opakované ID, proto se započítá jen 6 unikátních událostí. Modul zobrazí 6 zjištění k prověření. Kliknutí na „Označit jako zkontrolované“ mění stav pouze v otevřené stránce; při obnovení se ztratí. Stažený JSON report obsahuje i aktuální označení.
+
 ## Rozhodnutí a limity
 
 - Pravidla pouze označují riziko. Neprovádějí automatické změny v cenách, skladech ani překladech.
+- Kontrola ceny ověřuje kladnou číselnou hodnotu a měnu trhu; neurčuje, zda je cena obchodně správná ani nepočítá směnné kurzy.
 - Veškeré zpracování probíhá lokálně v prohlížeči. Server pouze servíruje statické soubory na `127.0.0.1` a používá omezenou sadu cest a bezpečnostní hlavičky.
 - Dalším krokem pro skutečný provoz by byl import anonymizovaného exportu nebo samostatný konektor s přístupovými právy a testovacím prostředím.
 - AI byla použita jako vývojový asistent při návrhu, implementaci a kontrole. Zjištění v aplikaci vznikají deterministicky podle popsaných pravidel, ne pomocí LLM.
