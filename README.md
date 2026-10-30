@@ -12,7 +12,7 @@ Vyžaduje Node.js 20+; nepotřebuje balíčky ani API klíč.
 npm start
 ```
 
-Otevřete `http://127.0.0.1:4174`. Testy: `npm test`.
+Otevřete `http://127.0.0.1:4174`. Testy: `npm test`. Pokud máte Node.js bez příkazu npm, použijte `node server.mjs` a `node --test`.
 
 ## 1. Katalog a trhy
 
