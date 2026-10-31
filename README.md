@@ -20,7 +20,7 @@ Otevřete `http://127.0.0.1:4174`. Testy: `npm test`. Pokud máte Node.js bez p�
 - Porovnání předchozího a aktuálního katalogového CSV: přidané, odebrané a změněné SKU podle trhu, včetně změn ceny, skladu, názvu, měny a URL. Duplicitní identity se označí jako nejednoznačné; úplný rozdíl je v JSON reportu.
 - Kontrola duplicitního SKU na trhu, názvů, cen, měn, skladu, URL a chybějících jazykových mutací.
 - Každé zjištění obsahuje odkaz na původní číslo řádku a doporučený krok k ručnímu ověření.
-- Filtrování podle trhu a závažnosti, označení jako zkontrolované a export JSON reportu.
+- Filtrování podle trhu a závažnosti, označení jako zkontrolované a export JSON reportu. Nový CSV export zjištění respektuje aktivní filtr závažnosti a zahrnuje aktuální stav prověření.
 - Stránkování katalogu po 100 řádcích a zjištění po 50 záznamech drží rozhraní použitelné i pro větší CSV; export obsahuje všechny výsledky.
 
 Požadované sloupce: `sku;market;title;price;currency;stock;url`. Trhy: CZ (CZK), SK (EUR), DE (EUR). Testovací katalog předpokládá stejný fyzický sklad pro všechny tři trhy; skutečný provoz může mít sklady oddělené, a pravidlo by se pak upravilo.
@@ -31,6 +31,9 @@ Požadované sloupce: `sku;market;title;price;currency;stock;url`. Trhy: CZ (CZK
 - Zpracování opakovaného `eventId` jen jednou (idempotence).
 - Zjištění zásilky bez objednávky, nesouladu SKU, expedice zrušené objednávky a chybějícího odeslání zaplacené objednávky.
 - Export kontrolního reportu. Tento modul používá připravená data; nemá import skutečných objednávek.
+- CSV výstup zjištění pro další práci v tabulce; při exportu se neutralizují vstupy, které by tabulkový procesor mohl vyhodnotit jako vzorec.
+
+Rozklikávací panel v obou pohledech vysvětluje technologie, vstupy a postup kontroly. Na telefonu se ovládání exportu zalomí a širší tabulku lze posunout vodorovně.
 
 ## Co uvidíte po spuštění
 
@@ -46,8 +49,8 @@ Výchozí katalog obsahuje 5 produktů na 15 řádcích a 5 zjištění (3 důle
 
 ## Ověření
 
-Šest automatických testů prošlo. V prohlížeči jsem načetl dva fiktivní katalogy, ověřil souhrn jedné přidané, jedné odebrané a jedné změněné položky a zkontroloval úplný JSON report. U 1 000řádkového exportu jsem ověřil stránkování katalogu a 2 000 zjištění. Mobilní rozložení při šířce 390 px nemělo vodorovné přetečení.
+Sedm automatických testů prošlo. V prohlížeči jsem načetl dva fiktivní katalogy, ověřil souhrn jedné přidané, jedné odebrané a jedné změněné položky a zkontroloval úplný JSON report. Nový průchod ověřil rozklikávací technický přehled, CSV podle filtru a mobilní šířku 390 px; původní kontrola prověřila také stránkování větších exportů.
 
 ## English summary
 
-Shop Ops Kit contains two portfolio demos for e-commerce operations: a CZ/SK/DE product feed auditor and an order-versus-shipment reconciler. The catalog tool also compares previous and current CSV exports, showing added, removed, and changed SKU/market rows while flagging ambiguous duplicates. Catalog rows and findings are paginated for larger imports; the report retains every result. It detects data quality problems, links findings to source rows or event IDs, handles duplicate shipment events idempotently, and exports a review report. All data is fictional; there is no live shop integration. Node.js 20+ is sufficient, with no dependencies or API keys.
+Shop Ops Kit contains two portfolio demos for e-commerce operations: a CZ/SK/DE product feed auditor and an order-versus-shipment reconciler. The catalog tool compares previous and current CSV exports, flagging ambiguous duplicates. It links findings to source rows or event IDs and handles duplicate shipment events idempotently. A filtered, spreadsheet-safe CSV exports findings and review state; JSON retains the full report. An expandable in-app note explains the stack and process. All data is fictional; there is no live shop integration. Node.js 20+ is sufficient, with no dependencies or API keys.

@@ -48,6 +48,19 @@ function finding(code, severity, title, detail, refs, action) {
   return { id: `${code}:${refs.join('-')}`, code, severity, title, detail, refs, action };
 }
 
+export function findingsCsv(issues, reviewed = new Set()) {
+  const safe = value => {
+    let text = String(value ?? '');
+    if (/^[\s\u0000-\u001f]*[=+\-@]/.test(text)) text = "'" + text;
+    return '"' + text.replaceAll('"', '""') + '"';
+  };
+  const rows = [
+    ['Priorita', 'Pravidlo', 'Zjištění', 'Detail', 'Zdrojové řádky nebo ID', 'Další krok', 'Stav'],
+    ...issues.map(issue => [issue.severity === 'high' ? 'Důležitá' : 'K ověření', issue.code, issue.title, issue.detail, issue.refs.join(' | '), issue.action, reviewed.has(issue.id) ? 'Prověřeno' : 'Otevřeno'])
+  ];
+  return '\ufeff' + rows.map(row => row.map(safe).join(';')).join('\r\n') + '\r\n';
+}
+
 export function auditCatalog(rows) {
   const issues = [];
   const byKey = new Map(), bySku = new Map(), byUrl = new Map();

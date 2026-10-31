@@ -1,6 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { auditCatalog, compareCatalog, parseDelimited, reconcileOrders } from '../engine.mjs';
+import { auditCatalog, compareCatalog, findingsCsv, parseDelimited, reconcileOrders } from '../engine.mjs';
+
+test('findings CSV retains source and review state while neutralizing formulas', () => {
+  const issue = { id: 'x', code: 'price', severity: 'high', title: '=HYPERLINK("bad")', detail: 'Cena; neplatná', refs: [12], action: 'Ověřit cenu' };
+  const csv = findingsCsv([issue], new Set(['x']));
+  assert.match(csv, /'\=HYPERLINK/);
+  assert.match(csv, /"Cena; neplatná"/);
+  assert.match(csv, /"12";"Ověřit cenu";"Prověřeno"/);
+});
 
 test('catalog comparison reports changes and never guesses through duplicate identities', () => {
   const oldRows = parseDelimited('sku;market;title;price;currency;stock;url\nA;CZ;Alpha;100;CZK;2;/cz/a\nB;CZ;Beta;50;CZK;1;/cz/b\nD;CZ;One;10;CZK;1;/cz/d\nD;CZ;Two;11;CZK;1;/cz/d2');

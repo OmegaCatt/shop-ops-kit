@@ -66,3 +66,11 @@ footer { border-color: #eadfdf; color: #a78f92; }
 .toast { background: #542932; box-shadow: 0 10px 35px #3b202628; }
  .catalog-actions{display:flex;gap:8px;flex-wrap:wrap}.catalog-diff{padding:15px 20px;background:#fff8f6;border-block:1px solid #ead4d1;color:#56353a;font-size:12px;line-height:1.55}.catalog-diff strong{display:block}.catalog-diff ul{margin:8px 0 0;padding-left:18px;max-height:180px;overflow:auto}.catalog-diff li{margin:3px 0}
  .catalog-pager{display:flex;align-items:center;justify-content:flex-end;gap:14px;padding:10px 18px;border-top:1px solid #ead4d1;font-size:12px;color:#56353a}.catalog-pager button{border:1px solid #ead4d1;background:#fff;border-radius:6px;padding:5px 10px;color:#56353a;cursor:pointer}.catalog-pager button:disabled{opacity:.4;cursor:default}
+.tech-details{margin:0 0 22px;border:1px solid #e3d9d9;background:#fff;border-radius:6px;padding:0 18px}
+.tech-details summary{cursor:pointer;padding:14px 0;font-size:13px;font-weight:700;color:#3b2026}
+.tech-details summary span{float:right;color:#827476;font-size:11px;font-weight:400}
+.tech-body{border-top:1px solid #eee7e7;padding:5px 0 12px}
+.tech-body p{font-size:12px;line-height:1.65;color:#635558;margin:10px 0}
+@media(max-width:650px){.tech-details summary span{display:block;float:none;margin-top:3px}}
+@media(max-width:480px){.intro-actions{flex-wrap:wrap;min-width:0}.intro-actions .button{flex:1 1 calc(50% - 8px);white-space:normal;min-width:0;text-align:center}.intro-actions #export-button{flex-basis:100%}}
+@media(max-width:480px){.brand-mark{white-space:nowrap;letter-spacing:-.1em}.table-wrap::before{content:'Tabulku lze posunout vodorovně →';display:block;padding:8px 14px;color:#8b7779;font-size:10px}}

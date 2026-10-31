@@ -1,4 +1,4 @@
-import { auditCatalog, compareCatalog, parseDelimited, reconcileOrders } from './engine.mjs';
+import { auditCatalog, compareCatalog, findingsCsv, parseDelimited, reconcileOrders } from './engine.mjs';
 import { sampleCatalog, sampleOrders, sampleShipments } from './fixtures.mjs';
 
 const $ = selector => document.querySelector(selector);
@@ -161,5 +161,12 @@ $('#export-button').addEventListener('click', () => {
   const data = { tool: 'Shop Ops Kit', demo: state.view === 'orders' || state.isDemo, view: state.view, generatedAt: new Date().toISOString(), summary, issues: issues.map(issue => ({ ...issue, reviewed: state.reviewed.has(issue.id) })), catalogComparison: state.view === 'catalog' && state.previousRows ? compareCatalog(state.previousRows, state.rows) : null };
   const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }));
   const link = document.createElement('a'); link.href = url; link.download = `shop-ops-${state.view}-report.json`; link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+});
+$('#export-findings').addEventListener('click', () => {
+  const result = state.view === 'catalog' ? catalog() : orders();
+  const visible = result.issues.filter(issue => state.severity === 'all' || issue.severity === state.severity);
+  const url = URL.createObjectURL(new Blob([findingsCsv(visible, state.reviewed)], { type: 'text/csv;charset=utf-8' }));
+  const link = document.createElement('a'); link.href = url; link.download = `shop-ops-${state.view}-zjisteni.csv`; document.body.append(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 3000);
+  toast(`Staženo ${visible.length} zjištění podle aktuálního filtru.`);
 });
 render();
