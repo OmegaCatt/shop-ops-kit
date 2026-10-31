@@ -1,6 +1,16 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { auditCatalog, parseDelimited, reconcileOrders } from '../engine.mjs';
+import { auditCatalog, compareCatalog, parseDelimited, reconcileOrders } from '../engine.mjs';
+
+test('catalog comparison reports changes and never guesses through duplicate identities', () => {
+  const oldRows = parseDelimited('sku;market;title;price;currency;stock;url\nA;CZ;Alpha;100;CZK;2;/cz/a\nB;CZ;Beta;50;CZK;1;/cz/b\nD;CZ;One;10;CZK;1;/cz/d\nD;CZ;Two;11;CZK;1;/cz/d2');
+  const newRows = parseDelimited('sku;market;title;price;currency;stock;url\nA;CZ;Alpha;120;CZK;3;/cz/a\nC;CZ;Gamma;60;CZK;1;/cz/c\nD;CZ;Three;12;CZK;1;/cz/d');
+  const result = compareCatalog(oldRows, newRows);
+  assert.deepEqual([result.added, result.removed, result.changed, result.ambiguous.length], [1, 1, 1, 1]);
+  assert.deepEqual(result.changes.find(x => x.key === 'A|CZ').fields, ['price', 'stock']);
+  assert.deepEqual(result.changes.find(x => x.key === 'A|CZ').previousRow, 2);
+  assert.equal(result.changes.some(x => x.key === 'D|CZ'), false);
+});
 import { sampleCatalog, sampleOrders, sampleShipments } from '../fixtures.mjs';
 
 test('CSV import handles BOM, quoted delimiters and physical source rows', () => {

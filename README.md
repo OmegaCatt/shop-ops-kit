@@ -17,9 +17,11 @@ Otevřete `http://127.0.0.1:4174`. Testy: `npm test`. Pokud máte Node.js bez p�
 ## 1. Katalog a trhy
 
 - Import CSV (čárka nebo středník, včetně uvozovaných hodnot; max. 2 MB / 10 000 řádků).
+- Porovnání předchozího a aktuálního katalogového CSV: přidané, odebrané a změněné SKU podle trhu, včetně změn ceny, skladu, názvu, měny a URL. Duplicitní identity se označí jako nejednoznačné; úplný rozdíl je v JSON reportu.
 - Kontrola duplicitního SKU na trhu, názvů, cen, měn, skladu, URL a chybějících jazykových mutací.
 - Každé zjištění obsahuje odkaz na původní číslo řádku a doporučený krok k ručnímu ověření.
 - Filtrování podle trhu a závažnosti, označení jako zkontrolované a export JSON reportu.
+- Stránkování katalogu po 100 řádcích a zjištění po 50 záznamech drží rozhraní použitelné i pro větší CSV; export obsahuje všechny výsledky.
 
 Požadované sloupce: `sku;market;title;price;currency;stock;url`. Trhy: CZ (CZK), SK (EUR), DE (EUR). Testovací katalog předpokládá stejný fyzický sklad pro všechny tři trhy; skutečný provoz může mít sklady oddělené, a pravidlo by se pak upravilo.
 
@@ -42,6 +44,10 @@ Výchozí katalog obsahuje 5 produktů na 15 řádcích a 5 zjištění (3 důle
 - Dalším krokem pro skutečný provoz by byl import anonymizovaného exportu nebo samostatný konektor s přístupovými právy a testovacím prostředím.
 - AI byla použita jako vývojový asistent při návrhu, implementaci a kontrole. Zjištění v aplikaci vznikají deterministicky podle popsaných pravidel, ne pomocí LLM.
 
+## Ověření
+
+Šest automatických testů prošlo. V prohlížeči jsem načetl dva fiktivní katalogy, ověřil souhrn jedné přidané, jedné odebrané a jedné změněné položky a zkontroloval úplný JSON report. U 1 000řádkového exportu jsem ověřil stránkování katalogu a 2 000 zjištění. Mobilní rozložení při šířce 390 px nemělo vodorovné přetečení.
+
 ## English summary
 
-Shop Ops Kit contains two portfolio demos for e-commerce operations: a CZ/SK/DE product feed auditor and an order-versus-shipment reconciler. It detects data quality problems, links findings to source rows or event IDs, handles duplicate shipment events idempotently, and exports a review report. All data is fictional; there is no live shop integration. Node.js 20+ is sufficient, with no dependencies or API keys.
+Shop Ops Kit contains two portfolio demos for e-commerce operations: a CZ/SK/DE product feed auditor and an order-versus-shipment reconciler. The catalog tool also compares previous and current CSV exports, showing added, removed, and changed SKU/market rows while flagging ambiguous duplicates. Catalog rows and findings are paginated for larger imports; the report retains every result. It detects data quality problems, links findings to source rows or event IDs, handles duplicate shipment events idempotently, and exports a review report. All data is fictional; there is no live shop integration. Node.js 20+ is sufficient, with no dependencies or API keys.

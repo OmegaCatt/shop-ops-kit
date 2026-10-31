@@ -33,9 +33,10 @@
         <section class="content-grid">
           <div class="main-column">
             <section class="panel" id="catalog-panel">
-              <div class="panel-head"><div><p class="panel-kicker">VSTUPNÍ DATA</p><h2>Produktový export</h2></div><label class="button outline upload-button">Importovat CSV <input id="catalog-file" type="file" accept=".csv,text/csv" hidden></label></div>
+              <div class="panel-head"><div><p class="panel-kicker">VSTUPNÍ DATA</p><h2>Produktový export</h2></div><div class="catalog-actions"><button id="previous-button" class="button outline upload-button" type="button">Předchozí CSV</button><input id="previous-file" type="file" accept=".csv,text/csv" hidden><button id="catalog-button" class="button outline upload-button" type="button">Aktuální CSV</button><input id="catalog-file" type="file" accept=".csv,text/csv" hidden></div></div>
+              <div id="catalog-diff" class="catalog-diff" role="status" aria-live="polite"></div>
               <div class="filterbar"><div class="segmented" aria-label="Filtr trhů"><button type="button" class="active" data-market="ALL">Vše</button><button type="button" data-market="CZ">CZ</button><button type="button" data-market="SK">SK</button><button type="button" data-market="DE">DE</button></div><span id="catalog-count" class="count-label"></span></div>
-              <div class="table-wrap"><table><thead><tr><th>ŘÁDEK</th><th>SKU / NÁZEV</th><th>TRH</th><th>CENA</th><th>SKLAD</th></tr></thead><tbody id="catalog-table"></tbody></table></div>
+              <div class="table-wrap"><table><thead><tr><th>ŘÁDEK</th><th>SKU / NÁZEV</th><th>TRH</th><th>CENA</th><th>SKLAD</th></tr></thead><tbody id="catalog-table"></tbody></table></div><div class="catalog-pager"><button id="catalog-prev" type="button" aria-label="Předchozí stránka katalogu">←</button><span id="catalog-page"></span><button id="catalog-next" type="button" aria-label="Další stránka katalogu">→</button></div>
             </section>
             <section class="panel hidden" id="orders-panel">
               <div class="panel-head"><div><p class="panel-kicker">POROVNÁNÍ SYSTÉMŮ</p><h2>Objednávky × zásilky</h2></div><span class="tag">DEMO REPLAY</span></div>
@@ -45,7 +46,7 @@
             </section>
           </div>
           <div class="side-column">
-            <section class="panel findings-panel"><div class="panel-head"><div><p class="panel-kicker">KONTROLNÍ FRONTA</p><h2>Zjištění <span id="finding-count" class="heading-count"></span></h2></div></div><div class="finding-filters"><button class="active" data-severity="all" type="button">Všechna</button><button data-severity="high" type="button">Důležitá</button><button data-severity="medium" type="button">K ověření</button></div><div id="findings" class="finding-list"></div></section>
+            <section class="panel findings-panel"><div class="panel-head"><div><p class="panel-kicker">KONTROLNÍ FRONTA</p><h2>Zjištění <span id="finding-count" class="heading-count"></span></h2></div></div><div class="finding-filters"><button class="active" data-severity="all" type="button">Všechna</button><button data-severity="high" type="button">Důležitá</button><button data-severity="medium" type="button">K ověření</button></div><div id="findings" class="finding-list"></div><div class="catalog-pager"><button id="finding-prev" type="button" aria-label="Předchozí stránka zjištění">←</button><span id="finding-page"></span><button id="finding-next" type="button" aria-label="Další stránka zjištění">→</button></div></section>
             <section class="panel method-panel"><p class="panel-kicker">JAK TO FUNGUJE</p><h2>Člověk rozhoduje</h2><p>Nástroj označí podezřelé záznamy a uvede původní řádek nebo ID události. U ceny, překladu a skladu nenavrhuje tichou opravu bez ověření zdroje.</p><div class="method-line"><span>01</span> Import / načtení dat</div><div class="method-line"><span>02</span> Kontrola pravidly</div><div class="method-line"><span>03</span> Potvrzení člověkem</div></section>
           </div>
         </section>

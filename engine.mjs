@@ -92,6 +92,34 @@ export function auditCatalog(rows) {
   };
 }
 
+// Compare only unambiguous SKU/market identities. Conflicting rows stay unresolved.
+export function compareCatalog(previous, current) {
+  const index = rows => {
+    const grouped = new Map();
+    for (const row of rows) {
+      const sku = String(row.sku ?? '').trim().toUpperCase();
+      const market = String(row.market ?? '').trim().toUpperCase();
+      if (!sku || !MARKETS[market]) continue;
+      const key = `${sku}|${market}`;
+      if (!grouped.has(key)) grouped.set(key, []);
+      grouped.get(key).push(row);
+    }
+    return grouped;
+  };
+  const before = index(previous), after = index(current), changes = [], ambiguous = [];
+  for (const key of new Set([...before.keys(), ...after.keys()])) {
+    const oldRows = before.get(key) ?? [], newRows = after.get(key) ?? [];
+    if (oldRows.length > 1 || newRows.length > 1) {
+      ambiguous.push({ key, previousRows: oldRows.map(row => row._row), currentRows: newRows.map(row => row._row) });
+      continue;
+    }
+    const oldRow = oldRows[0], newRow = newRows[0];
+    const fields = oldRow && newRow ? ['title', 'price', 'currency', 'stock', 'url'].filter(field => String(oldRow[field] ?? '').trim() !== String(newRow[field] ?? '').trim()) : [];
+    if (!oldRow || !newRow || fields.length) changes.push({ key, type: !oldRow ? 'added' : !newRow ? 'removed' : 'changed', fields, previousRow: oldRow?._row ?? null, currentRow: newRow?._row ?? null, before: oldRow ?? null, after: newRow ?? null });
+  }
+  return { changes, ambiguous, added: changes.filter(x => x.type === 'added').length, removed: changes.filter(x => x.type === 'removed').length, changed: changes.filter(x => x.type === 'changed').length };
+}
+
 export function reconcileOrders(orders, shipments) {
   const issues = [];
   const orderMap = new Map(orders.map(order => [order.id, order]));
