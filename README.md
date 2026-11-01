@@ -39,6 +39,16 @@ Rozklikávací panel v obou pohledech vysvětluje technologie, vstupy a postup k
 
 Výchozí katalog obsahuje 5 produktů na 15 řádcích a 5 zjištění (3 důležitá). Ukázka objednávek obsahuje 6 objednávek a 7 expedičních událostí; jedna událost má opakované ID, proto se započítá jen 6 unikátních událostí. Modul zobrazí 6 zjištění k prověření. Kliknutí na „Označit jako zkontrolované“ mění stav pouze v otevřené stránce; při obnovení se ztratí. Stažený JSON report obsahuje i aktuální označení.
 
+## Praktický postup a technické řešení
+
+V části katalogu načtěte předchozí a současný CSV export, porovnejte změny SKU po trzích a projděte nálezy podle závažnosti. Otevřete zdrojový řádek, označte prověřené položky a vyexportujte JSON nebo filtrované CSV. V části objednávek spusťte kontrolu připravených dat a podívejte se na rozdíly mezi objednávkou a expediční událostí. Tento druhý modul zatím neimportuje vlastní soubory.
+
+Hotová verze používá **JavaScript ES modules, HTML/CSS, místní Node.js server, vlastní CSV zpracování a `node:test`**. Kontroly běží v prohlížeči podle pevných pravidel. Nejde o AI rozhodování, živý e-shop ani automatickou opravu katalogu. Odlišnost od DataDesku je důraz na změny produktového katalogu mezi exporty a vícejazyčné trhy.
+
+## Jak by šlo řešení použít ve firmě
+
+Na začátku by stačily anonymizované katalogové exporty a dohoda o tom, zda každá země sdílí sklad, jaké jsou povolené měny a co je chyba oproti legitimní změně. Po ověření pravidel se dá výstup použít jako kontrolní seznam před publikací produktů. Firemní provoz by vyžadoval schválený konektor nebo pravidelný export, historii kontrol, přístupová práva a proces schválení změn. Import objednávek, automatické plánování a napojení na konkrétní e-shop jsou **možná rozšíření**.
+
 ## Rozhodnutí a limity
 
 - Pravidla pouze označují riziko. Neprovádějí automatické změny v cenách, skladech ani překladech.
@@ -54,3 +64,11 @@ Sedm automatických testů prošlo. V prohlížeči jsem načetl dva fiktivní k
 ## English summary
 
 Shop Ops Kit contains two portfolio demos for e-commerce operations: a CZ/SK/DE product feed auditor and an order-versus-shipment reconciler. The catalog tool compares previous and current CSV exports, flagging ambiguous duplicates. It links findings to source rows or event IDs and handles duplicate shipment events idempotently. A filtered, spreadsheet-safe CSV exports findings and review state; JSON retains the full report. An expandable in-app note explains the stack and process. All data is fictional; there is no live shop integration. Node.js 20+ is sufficient, with no dependencies or API keys.
+
+### Workflow and stack
+
+Import previous and current product CSVs, inspect SKU changes by market, filter findings, review source rows, and export JSON or filtered CSV. The order/shipment module checks its prepared data; it does not import external orders. The implemented stack is JavaScript ES modules, HTML/CSS, a local Node.js static server, CSV processing, and built-in `node:test`. Findings are deterministic. Unlike DataDesk, this project focuses on cross-market product-feed changes as well as a small seeded fulfillment example.
+
+### Possible company adoption
+
+Start with anonymized catalog exports and agree on inventory, currency, and translation rules. After validating the checks against known cases, use the report as a pre-publication checklist. A shared workflow would need an approved connector or scheduled export, access control, review history, and change approval. Live shop integration, scheduled runs, and external order import are proposed additions, not implemented features.
