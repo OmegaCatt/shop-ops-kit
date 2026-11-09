@@ -32,7 +32,7 @@ Ověřeno na Node.js 24; běh nepotřebuje instalaci balíčků ani API klíč. 
 npm start
 ```
 
-Otevřete `http://127.0.0.1:4174`. Testy: `npm test`. Pokud máte Node.js bez příkazu npm, použijte `node server.mjs` a `node --test`.
+Otevřete `http://127.0.0.1:4175`. Výchozí port se liší od OfferLens (4174), takže lze obě aplikace spustit současně. Testy: `npm test`. Pokud máte Node.js bez příkazu npm, použijte `node server.mjs` a `node --test`.
 
 ## 1. Katalog a trhy
 

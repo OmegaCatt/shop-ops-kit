@@ -42,6 +42,6 @@ return createServer(async (req, res) => {
 });
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href){
- const port=Number(process.env.PORT??4174);if(!Number.isInteger(port)||port<1||port>65535)throw Error('Invalid PORT');
+ const port=Number(process.env.PORT??4175);if(!Number.isInteger(port)||port<1||port>65535)throw Error('Invalid PORT');
  createStaticServer().listen(port,'127.0.0.1',()=>console.log(`Shop Ops Kit: http://127.0.0.1:${port}`));
 }
