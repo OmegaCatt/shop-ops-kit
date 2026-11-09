@@ -61,7 +61,8 @@ export function findingsCsv(issues, reviewed = new Set()) {
   return '\ufeff' + rows.map(row => row.map(safe).join(';')).join('\r\n') + '\r\n';
 }
 
-export function auditCatalog(rows) {
+export function auditCatalog(rows, {sharedStock=true, expectedMarkets=Object.keys(MARKETS)}={}) {
+  if(!Array.isArray(expectedMarkets)||!expectedMarkets.length||expectedMarkets.some(m=>!Object.hasOwn(MARKETS,m))||new Set(expectedMarkets).size!==expectedMarkets.length)throw new Error('Neplatný seznam trhů.');
   const issues = [];
   const byKey = new Map(), bySku = new Map(), byUrl = new Map();
   for (const row of rows) {
@@ -91,11 +92,11 @@ export function auditCatalog(rows) {
   for (const [sku, markets] of bySku) {
     if (!markets.has('CZ')) continue;
     const sourceRow = markets.get('CZ')._row;
-    for (const market of Object.keys(MARKETS)) {
+    for (const market of expectedMarkets) {
       if (!markets.has(market)) issues.push(finding(`missing-market-${market}`, 'medium', 'Chybí jazyková mutace', `${sku} chybí na trhu ${market}.`, [sourceRow], 'Ověřit, zda se má produkt na trhu prodávat; případně připravit překlad.'));
     }
     const validStocks = [...markets.values()].map(r => ({ stock: Number(r.stock), row: r._row })).filter(x => Number.isInteger(x.stock) && x.stock >= 0);
-    if (new Set(validStocks.map(x => x.stock)).size > 1) issues.push(finding('stock-drift', 'high', 'Nesoulad skladu mezi trhy', `${sku}: ${[...markets].map(([m, r]) => `${m} ${r.stock}`).join(' · ')}.`, validStocks.map(x => x.row), 'Porovnat s jediným autoritativním skladem; nevyrovnávat naslepo.'));
+    if (sharedStock && new Set(validStocks.map(x => x.stock)).size > 1) issues.push(finding('stock-drift', 'high', 'Nesoulad skladu mezi trhy', `${sku}: ${[...markets].map(([m, r]) => `${m} ${r.stock}`).join(' · ')}.`, validStocks.map(x => x.row), 'Porovnat s jediným autoritativním skladem; nevyrovnávat naslepo.'));
   }
   return {
     issues: issues.sort((a, b) => (a.severity === 'high' ? 0 : 1) - (b.severity === 'high' ? 0 : 1) || Number(a.refs[0]) - Number(b.refs[0])),
@@ -131,6 +132,17 @@ export function compareCatalog(previous, current) {
     if (!oldRow || !newRow || fields.length) changes.push({ key, type: !oldRow ? 'added' : !newRow ? 'removed' : 'changed', fields, previousRow: oldRow?._row ?? null, currentRow: newRow?._row ?? null, before: oldRow ?? null, after: newRow ?? null });
   }
   return { changes, ambiguous, added: changes.filter(x => x.type === 'added').length, removed: changes.filter(x => x.type === 'removed').length, changed: changes.filter(x => x.type === 'changed').length };
+}
+
+export function priceChangeChecks(previous,current,threshold=20){
+  if(!Number.isFinite(threshold)||threshold<0||threshold>10000)throw new Error('Neplatný procentní limit.');
+  return compareCatalog(previous,current).changes.flatMap(change=>{
+    if(change.type!=='changed'||change.before.currency!==change.after.currency)return [];
+    const before=Number(String(change.before.price).replace(',','.')),after=Number(String(change.after.price).replace(',','.'));
+    if(!Number.isFinite(before)||!Number.isFinite(after)||before<=0||after<=0)return [];
+    const percent=(after-before)/before*100;
+    return Math.abs(percent)>threshold?[finding('price-change','high','Změna ceny nad limitem',`${change.key}: ${before} → ${after} ${change.after.currency} (${percent.toFixed(2)} %, limit ${threshold} %).`,[change.currentRow],'Ověřit změnu proti schválenému ceníku.')]:[];
+  });
 }
 
 export function reconcileOrders(orders, shipments) {

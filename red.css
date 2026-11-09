@@ -74,3 +74,4 @@ footer { border-color: #eadfdf; color: #a78f92; }
 @media(max-width:650px){.tech-details summary span{display:block;float:none;margin-top:3px}}
 @media(max-width:480px){.intro-actions{flex-wrap:wrap;min-width:0}.intro-actions .button{flex:1 1 calc(50% - 8px);white-space:normal;min-width:0;text-align:center}.intro-actions #export-button{flex-basis:100%}}
 @media(max-width:480px){.brand-mark{white-space:nowrap;letter-spacing:-.1em}.table-wrap::before{content:'Tabulku lze posunout vodorovně →';display:block;padding:8px 14px;color:#8b7779;font-size:10px}}
+.tech-details>label{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 15px 12px 0;font-size:12px}.tech-details>label input[type=number]{width:85px;padding:6px;border:1px solid #d9c9c9;border-radius:4px}.tech-details>button{padding:7px 10px;border:1px solid #d9c9c9;background:white;border-radius:4px;margin:6px 0 12px;color:#56353a}

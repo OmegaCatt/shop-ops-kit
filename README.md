@@ -1,5 +1,11 @@
 # Shop Ops Kit
 
+## Aktualizace 9. 11. 2026: Nastavitelná katalogová pravidla
+
+Uživatel výslovně nastavuje, zda trhy sdílejí sklad, a mez procentní změny ceny proti předchozímu exportu. Změna pravidel ruší dosavadní prověření. Výchozí scénář používá společný sklad. Cenové srovnání nepřevádí měny a nevybírá z duplicitních SKU. Seznam očekávaných trhů lze předat validačnímu modulu; UI zatím používá CZ/SK/DE.
+
+English: configurable shared-stock assumption and price-change threshold. Rule changes clear review flags; price comparisons exclude ambiguous identities and currency changes.
+
 **Dvě malé ukázkové aplikace pro provoz e-shopu:** kontrola produktového exportu pro CZ/SK/DE a porovnání objednávek se zásilkami. Vznikly jako portfolio pro roli, která kombinuje e-commerce, data, automatizaci a QA. Všechny dodané produkty a objednávky jsou fiktivní. Projekt není napojený na MITO LIGHT ani jiný skutečný obchod.
 
 ![Přehled aplikace](docs/preview.png)

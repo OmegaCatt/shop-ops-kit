@@ -1,9 +1,10 @@
-import { auditCatalog, compareCatalog, findingsCsv, parseDelimited, reconcileOrders } from './engine.mjs';
+import { auditCatalog, compareCatalog, findingsCsv, parseDelimited, reconcileOrders, priceChangeChecks } from './engine.mjs';
 import { sampleCatalog, sampleOrders, sampleShipments } from './fixtures.mjs';
 
 const $ = selector => document.querySelector(selector);
 const state = { view: 'catalog', market: 'ALL', severity: 'all', page: 1, findingPage: 1, rows: parseDelimited(sampleCatalog), previousRows: null, reviewed: new Set(), isDemo: true };
-const catalog = () => auditCatalog(state.rows);
+const rules={sharedStock:true,expectedMarkets:['CZ','SK','DE'],threshold:20};
+const catalog = () => {const result=auditCatalog(state.rows,rules);if(state.previousRows)result.issues.push(...priceChangeChecks(state.previousRows,state.rows,rules.threshold));return result;};
 const orders = () => reconcileOrders(sampleOrders, sampleShipments);
 const el = (tag, className, value) => { const node = document.createElement(tag); if (className) node.className = className; if (value !== undefined) node.textContent = value; return node; };
 
@@ -169,4 +170,11 @@ $('#export-findings').addEventListener('click', () => {
   const link = document.createElement('a'); link.href = url; link.download = `shop-ops-${state.view}-zjisteni.csv`; document.body.append(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 3000);
   toast(`Staženo ${visible.length} zjištění podle aktuálního filtru.`);
 });
+const settings=el('details','tech-details');settings.append(el('summary','','Pravidla kontroly katalogu'));
+const shared=el('input');shared.type='checkbox';shared.checked=true;
+const label=el('label','','Trhy používají společný sklad ');label.append(shared);settings.append(label);
+const threshold=el('input');threshold.type='number';threshold.min='0';threshold.max='10000';threshold.value='20';
+const priceLabel=el('label','',' Limit změny ceny (%) ');priceLabel.append(threshold);settings.append(priceLabel);
+const saveRules=el('button','','Použít pravidla');saveRules.type='button';saveRules.addEventListener('click',()=>{const value=Number(threshold.value);if(!threshold.value||!Number.isFinite(value)||value<0||value>10000){toast('Zadejte limit od 0 do 10 000 %.');return}rules.sharedStock=shared.checked;rules.threshold=value;state.reviewed.clear();render();toast('Pravidla změněna; dřívější prověření byla zrušena.');});settings.append(saveRules);
+document.querySelector('main').prepend(settings);
 render();
