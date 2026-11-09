@@ -39,6 +39,14 @@
               <div class="filterbar"><div class="segmented" aria-label="Filtr trhů"><button type="button" class="active" data-market="ALL">Vše</button><button type="button" data-market="CZ">CZ</button><button type="button" data-market="SK">SK</button><button type="button" data-market="DE">DE</button></div><span id="catalog-count" class="count-label"></span></div>
               <div class="table-wrap"><table><thead><tr><th>ŘÁDEK</th><th>SKU / NÁZEV</th><th>TRH</th><th>CENA</th><th>SKLAD</th></tr></thead><tbody id="catalog-table"></tbody></table></div><div class="catalog-pager"><button id="catalog-prev" type="button" aria-label="Předchozí stránka katalogu">←</button><span id="catalog-page"></span><button id="catalog-next" type="button" aria-label="Další stránka katalogu">→</button></div>
             </section>
+            <section class="panel" id="publication-panel" aria-labelledby="publication-title">
+              <div class="panel-head"><div><p class="panel-kicker">PŘED PUBLIKACÍ</p><h2 id="publication-title">Schválení změn</h2></div></div>
+              <p class="panel-description">Prověření nálezu není schválení změny. Důležitý nález blokuje schválení; upozornění vyžaduje důvod a výjimku do 30 dnů. Rozhodnutí platí jen pro oba aktuální soubory a pravidla. Jde o místní ukázku bez ověření identity; nic se nezapisuje do e-shopu.</p>
+              <p id="publication-summary" class="panel-description" role="status"></p>
+              <div class="publication-toolbar"><button id="approved-csv" class="button outline" disabled>Schválené změny CSV</button><button id="publication-json" class="button outline" disabled>Rozhodnutí a podklady JSON</button></div>
+              <div id="publication-list"></div>
+              <div class="catalog-pager"><button id="publication-prev" aria-label="Předchozí změny">←</button><span id="publication-page"></span><button id="publication-next" aria-label="Další změny">→</button></div>
+            </section>
             <section class="panel hidden" id="orders-panel">
               <div class="panel-head"><div><p class="panel-kicker">POROVNÁNÍ SYSTÉMŮ</p><h2>Objednávky × zásilky</h2></div><span class="tag">DEMO REPLAY</span></div>
               <p class="panel-description">Každá událost zásilky se započítá jen jednou podle ID. Chybné mapování a rozdíly v množství zůstanou viditelné ke kontrole.</p>

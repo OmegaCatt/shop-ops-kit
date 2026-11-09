@@ -1,6 +1,6 @@
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath,pathToFileURL } from 'node:url';
 import { dirname, join } from 'node:path';
 
 const root = dirname(fileURLToPath(import.meta.url));
@@ -11,13 +11,12 @@ const files = new Map([
   ['/red.css', ['red.css', 'text/css; charset=utf-8']],
   ['/app.mjs', ['app.mjs', 'text/javascript; charset=utf-8']],
   ['/engine.mjs', ['engine.mjs', 'text/javascript; charset=utf-8']],
+  ['/workflow.mjs', ['workflow.mjs', 'text/javascript; charset=utf-8']],
   ['/fixtures.mjs', ['fixtures.mjs', 'text/javascript; charset=utf-8']],
 ]);
 
-const port = Number(process.env.PORT ?? 4174);
-if (!Number.isInteger(port) || port < 1 || port > 65535) throw new Error('Invalid PORT');
-
-createServer(async (req, res) => {
+export function createStaticServer(){
+return createServer(async (req, res) => {
   const pathname = new URL(req.url ?? '/', 'http://localhost').pathname;
   const route = files.get(pathname);
   if (req.method !== 'GET' || !route) {
@@ -40,6 +39,9 @@ createServer(async (req, res) => {
     res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
     res.end('File unavailable');
   }
-}).listen(port, '127.0.0.1', () => {
-  console.log(`Shop Ops Kit: http://127.0.0.1:${port}`);
 });
+}
+if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href){
+ const port=Number(process.env.PORT??4174);if(!Number.isInteger(port)||port<1||port>65535)throw Error('Invalid PORT');
+ createStaticServer().listen(port,'127.0.0.1',()=>console.log(`Shop Ops Kit: http://127.0.0.1:${port}`));
+}

@@ -5,7 +5,14 @@
   "type": "module",
   "scripts": {
     "start": "node server.mjs",
-    "test": "node --test"
+    "test": "node --test",
+    "qa": "node scripts/qa.mjs",
+    "check": "node --check app.mjs && node --check workflow.mjs && node --check server.mjs"
   },
-  "engines": { "node": ">=20" }
+  "engines": {
+    "node": ">=24"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
 }

@@ -80,10 +80,10 @@ export function auditCatalog(rows, {sharedStock=true, expectedMarkets=Object.key
     if (!bySku.get(sku).has(market)) bySku.get(sku).set(market, row);
     if (!row.title) issues.push(finding('title', 'medium', 'Chybí název produktu', `${sku} na trhu ${market} nemá název.`, [ref], 'Doplnit překlad a nechat jej schválit.'));
     const price = Number(String(row.price).replace(',', '.'));
-    if (!Number.isFinite(price) || price <= 0) issues.push(finding('price', 'high', 'Neplatná cena', `${sku} na trhu ${market} má cenu „${row.price}“.`, [ref], 'Opravit cenu podle schváleného ceníku.'));
+    if (!/^\d+(?:[.,]\d{1,2})?$/.test(String(row.price).trim()) || !Number.isFinite(price) || price <= 0) issues.push(finding('price', 'high', 'Neplatná cena', `${sku} na trhu ${market} má cenu „${row.price}“.`, [ref], 'Opravit cenu podle schváleného ceníku.'));
     if (row.currency !== MARKETS[market]) issues.push(finding('currency', 'high', 'Nesprávná měna', `${market} očekává ${MARKETS[market]}, v exportu je ${row.currency || 'prázdno'}.`, [ref], 'Ověřit měnu a cenu ve zdrojovém systému.'));
     const stock = Number(row.stock);
-    if (!Number.isInteger(stock) || stock < 0) issues.push(finding('stock', 'high', 'Neplatný sklad', `${sku} na trhu ${market} má množství „${row.stock}“.`, [ref], 'Opravit podle skladového systému.'));
+    if (!/^\d+$/.test(String(row.stock).trim()) || !Number.isSafeInteger(stock) || stock < 0) issues.push(finding('stock', 'high', 'Neplatný sklad', `${sku} na trhu ${market} má množství „${row.stock}“.`, [ref], 'Opravit podle skladového systému.'));
     const url = String(row.url ?? '').trim();
     if (!url.startsWith(`/${market.toLowerCase()}/`)) issues.push(finding('url', 'medium', 'Podezřelá cesta produktu', `${sku}: URL „${url}“ neodpovídá trhu ${market}.`, [ref], 'Prověřit adresu a jazykovou mutaci.'));
     if (url && byUrl.has(url)) issues.push(finding('url-duplicate', 'medium', 'Duplicitní URL', `Adresu ${url} používá více záznamů.`, [byUrl.get(url), ref], 'Ověřit cílové stránky.'));

@@ -75,3 +75,12 @@ footer { border-color: #eadfdf; color: #a78f92; }
 @media(max-width:480px){.intro-actions{flex-wrap:wrap;min-width:0}.intro-actions .button{flex:1 1 calc(50% - 8px);white-space:normal;min-width:0;text-align:center}.intro-actions #export-button{flex-basis:100%}}
 @media(max-width:480px){.brand-mark{white-space:nowrap;letter-spacing:-.1em}.table-wrap::before{content:'Tabulku lze posunout vodorovně →';display:block;padding:8px 14px;color:#8b7779;font-size:10px}}
 .tech-details>label{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 15px 12px 0;font-size:12px}.tech-details>label input[type=number]{width:85px;padding:6px;border:1px solid #d9c9c9;border-radius:4px}.tech-details>button{padding:7px 10px;border:1px solid #d9c9c9;background:white;border-radius:4px;margin:6px 0 12px;color:#56353a}
+
+.publication-toolbar,.publication-actions{display:flex;flex-wrap:wrap;gap:8px;padding:12px 18px}
+.publication-change{margin:12px 18px;padding:16px;border:1px solid #ead4d1;border-radius:5px;font-size:12px;overflow-wrap:anywhere}
+.publication-change>p{margin:7px 0;line-height:1.5}.publication-status{font-weight:700;color:#963535}
+.publication-change>input{width:100%;padding:10px;border:1px solid #d9c9c9;border-radius:4px;margin-top:8px;font:inherit}
+.publication-change>label{display:block;margin-top:10px}.publication-change>label[hidden]{display:none}
+.publication-change>label input{padding:7px;border:1px solid #d9c9c9;border-radius:4px;font:inherit}
+.publication-actions{padding:12px 0 0}.publication-toolbar .button{white-space:normal}
+.publication-actions button:disabled{opacity:.45;cursor:not-allowed}
