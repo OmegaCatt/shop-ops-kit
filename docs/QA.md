@@ -1,3 +1,7 @@
+## Ověřený vzdálený běh
+
+GitHub Actions úspěšně ověřily kód `fa77e1c`: [výsledek kontroly](https://github.com/OmegaCatt/shop-ops-kit/actions/runs/42686828209). Artefakt `shop-ops-workflow-preview` byl skutečně nahrán.
+
 # Druhá etapa 9. 11. 2026 – SO-2a a SO-3a/b/c/d
 
 16 Node testů prošlo. Nové případy: důvod rozhodnutí, důležitý nález a nejednoznačné identity, výjimka/expirace/nejvýše 30 dnů UTC, otisk obou vstupů i pravidel, CSV jen schválených změn s ochranou textových buněk, zamítnutí, oddělení starých a nových řádků a přísné číselné vstupy. Prázdný sklad už neprochází jako nula.
@@ -6,7 +10,7 @@ Browser QA skutečného serveru s CSP: dva vlastní CSV, očekávané trhy CZ, c
 
 Místní jednorázové měření Node 24.22.1: 10 000 změn a 20 000 nálezů; příprava s SHA-256 191,53 ms, úplný rozhodovací report 11,05 ms. Při návrhu bylo vazby nálezů vhodné indexovat podle řádku místo opakovaného procházení všech nálezů pro každou změnu. Jde o místní vzorek bez prohlížečové latence, nikoli řízenou studii.
 
-CI nově spouští testy a browser QA a nahrává screenshoty; vzdálený běh této etapy zatím není ověřený. Rozhodnutí jsou místní bez autentizace. Nový zdroj/pravidla zruší jejich platnost; samotný export není podepsaný auditní záznam a nelze jej obnovit jako schválení. Další vstupní formát, import objednávek a řízené návrhy textů zůstávají neimplementované.
+CI nově spouští testy a browser QA a nahrává screenshoty; vzdálený běh této etapy prošel, viz odkaz v úvodu. Rozhodnutí jsou místní bez autentizace. Nový zdroj/pravidla zruší jejich platnost; samotný export není podepsaný auditní záznam a nelze jej obnovit jako schválení. Další vstupní formát, import objednávek a řízené návrhy textů zůstávají neimplementované.
 
 Následují historické etapy.
 

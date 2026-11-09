@@ -1,8 +1,22 @@
 # Shop Ops Kit
 
-## Aktualizace 9. 11. 2026: Nastavitelná katalogová pravidla
+## Druhá etapa 9. 11. 2026: schválení konkrétních změn
 
-Uživatel výslovně nastavuje, zda trhy sdílejí sklad, a mez procentní změny ceny proti předchozímu exportu. Změna pravidel ruší dosavadní prověření. Výchozí scénář používá společný sklad. Cenové srovnání nepřevádí měny a nevybírá z duplicitních SKU. Seznam očekávaných trhů lze předat validačnímu modulu; UI zatím používá CZ/SK/DE.
+Po načtení předchozího a aktuálního katalogu je možné rozhodovat o změnách SKU/trhu. **Prověření nálezu není schválení změny.** Schválení/zamítnutí vyžaduje důvod; důležitý nález schválení blokuje. Upozornění lze přijmout s odůvodněnou výjimkou na nejvýše 30 dnů, konec se vyhodnocuje v UTC. Expirovaná výjimka se do schváleného exportu nedostane.
+
+Rozhodnutí váže SHA-256 na oba exporty a pravidla. Nový vstup, reset nebo změna pravidel rozhodnutí zruší. Export schválených změn CSV obsahuje původní i nové hodnoty, důvod, čas a případnou platnost výjimky. JSON zachová i zamítnuté, čekající, blokované a nejednoznačné položky. Důležitý nález na jiném nezměněném produktu není potvrzením kvality celého katalogu; jde o posouzení konkrétních změn, ne certifikaci dat.
+
+Jde o místní demonstrační postup bez účtů, skutečně ověřeného schvalovatele a zápisu do e-shopu. Rozhodnutí žijí v otevřené stránce; JSON je záznam, nikoli obnovitelný schvalovací případ. Výsledky do systému musí po vlastní kontrole převzít člověk.
+
+![Schválené a blokované změny](docs/workflow.png)
+
+UI nyní nastavuje i očekávané trhy. Prázdný sklad se nesmí změnit na nulu; sklad vyžaduje bezpečně reprezentovatelné celé číslo a cena běžný desetinný zápis s nejvýše dvěma desetinnými místy. Hexadecimální a exponenciální zápisy se odmítají.
+
+English: changes now have a reasoned approval/rejection workflow, SHA-256 input/rule binding, hard blockers, expiring medium-warning exceptions and approved-only CSV exports. Review flags are separate. This is a local, unauthenticated demonstration; no shop is updated, no approver identity is verified and exported decisions are not a restorable case.
+
+## První etapa 9. 11. 2026: Nastavitelná katalogová pravidla
+
+Uživatel výslovně nastavuje, zda trhy sdílejí sklad, a mez procentní změny ceny proti předchozímu exportu. Změna pravidel ruší dosavadní prověření. Výchozí scénář používá společný sklad. Cenové srovnání nepřevádí měny a nevybírá z duplicitních SKU. Očekávané trhy lze nyní nastavit i v UI; report zachovává použitá pravidla.
 
 English: configurable shared-stock assumption and price-change threshold. Rule changes clear review flags; price comparisons exclude ambiguous identities and currency changes.
 
@@ -12,7 +26,7 @@ English: configurable shared-stock assumption and price-change threshold. Rule c
 
 ## Spuštění
 
-Vyžaduje Node.js 20+; nepotřebuje balíčky ani API klíč.
+Ověřeno na Node.js 24; běh nepotřebuje instalaci balíčků ani API klíč. Playwright je vývojová závislost pouze pro browser QA.
 
 ```bash
 npm start
@@ -65,11 +79,15 @@ Na začátku by stačily anonymizované katalogové exporty a dohoda o tom, zda 
 
 ## Ověření
 
-Sedm automatických testů prošlo. V prohlížeči jsem načetl dva fiktivní katalogy, ověřil souhrn jedné přidané, jedné odebrané a jedné změněné položky a zkontroloval úplný JSON report. Nový průchod ověřil rozklikávací technický přehled, CSV podle filtru a mobilní šířku 390 px; původní kontrola prověřila také stránkování větších exportů.
+Aktuálně prošlo 16 automatických testů a opakovatelné browser QA. Historicky: sedm původních testů prošlo. V prohlížeči jsem načetl dva fiktivní katalogy, ověřil souhrn jedné přidané, jedné odebrané a jedné změněné položky a zkontroloval úplný JSON report. Nový průchod ověřil rozklikávací technický přehled, CSV podle filtru a mobilní šířku 390 px; původní kontrola prověřila také stránkování větších exportů.
+
+### Opakovatelná kontrola
+
+`node --test` prověřuje modul, `pnpm install --frozen-lockfile`, `pnpm exec playwright install chromium` a `pnpm qa` spustí browser QA nad skutečným serverem s CSP. `PLAYWRIGHT_EXECUTABLE_PATH` může vybrat místní prohlížeč. `node scripts/benchmark-workflow.mjs` změří 10 000 změn/20 000 nálezů; nejde o příslib výkonu jiného zařízení.
 
 ## English summary
 
-Shop Ops Kit contains two portfolio demos for e-commerce operations: a CZ/SK/DE product feed auditor and an order-versus-shipment reconciler. The catalog tool compares previous and current CSV exports, flagging ambiguous duplicates. It links findings to source rows or event IDs and handles duplicate shipment events idempotently. A filtered, spreadsheet-safe CSV exports findings and review state; JSON retains the full report. An expandable in-app note explains the stack and process. All data is fictional; there is no live shop integration. Node.js 20+ is sufficient, with no dependencies or API keys.
+Shop Ops Kit contains two portfolio demos for e-commerce operations: a CZ/SK/DE product feed auditor and an order-versus-shipment reconciler. The catalog tool compares previous and current CSV exports, flagging ambiguous duplicates. It links findings to source rows or event IDs and handles duplicate shipment events idempotently. A filtered, spreadsheet-safe CSV exports findings and review state; JSON retains the full report. An expandable in-app note explains the stack and process. All data is fictional; there is no live shop integration. The app runs on Node.js 24 without installing packages or using API keys. Playwright is a development-only QA dependency.
 
 ### Workflow and stack
 
