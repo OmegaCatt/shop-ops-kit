@@ -1,3 +1,12 @@
+# Opakované ověření 10. 11. 2026
+
+**21 Node testů prošlo.** Znovu spuštěné prohlížečové QA ověřilo skutečný pracovní postup na dočasných fiktivních podkladech, desktop i mobil a JavaScript chyby. Nalezeno a opraveno: CSV hlavička _row mohla přepsat skutečný zdrojový řádek. Rezervované interní/prototypové názvy se odmítají. Nový regresní test nejprve selhal na původním kódu a po opravě prošel; browser potvrzuje odmítnutí a zachování předchozího platného katalogu. Původních 20 testů se rozšířilo na 21.
+
+Ověřený předchozí commit 52c3d93: [GitHub Actions](https://github.com/OmegaCatt/shop-ops-kit/actions/runs/42730742859); dostupnost jeho artefaktů byla ověřena. Aktuální revize dokumentace/oprav je kontrolována novým CI. Jeho přesný commit a výsledek jsou v hlavním Portfolio_PROGRESS.md. Staré věty o čekající publikaci v rozbaleném archivu platily jen pro dobu daného zápisu.
+
+<details>
+<summary>Historické výsledky, původní metriky a omezení</summary>
+
 # Etapa 10. 11. 2026 – SO-4/5
 
 **CSV i verzovaný JSON katalog; kontrolované návrhy textů.** Oba vstupy procházejí stejnými obchodními pravidly a schvalovací bránou. JSON má format shop-ops-catalog, version 1 a products s právě sedmi textovými poli: sku, market, title, price, currency, stock, url. Cenu a sklad uchovává jako text pro audit; neplatná hodnota se nepřevede na platnou. Do 2 MB / 10 000 položek. JSON zdroj se ukazuje cestou products[index]. Tlačítko „Aktuální katalog JSON“ stáhne aktuální normalizovaný katalog jako vzor; schválení nepřenáší.
@@ -33,3 +42,6 @@ Následují historické etapy.
 ## Veřejná dostupnost 10. 11. 2026
 
 https://omegacatt.github.io/shop-ops-kit/ skutečně ověřeno bez přihlášení: HTTP 200, katalog, stažení JSON a mobil bez JS chyb/přetečení. Celá nová sada JSON/draft průchodu prošla i proti této veřejné URL, včetně lidské kontroly, exportu a zneplatnění. SHOP_OPS_QA_BASE_URL je volitelné, CI standardně používá místní server.
+
+
+</details>

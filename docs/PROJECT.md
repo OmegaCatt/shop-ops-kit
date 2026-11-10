@@ -1,3 +1,12 @@
+# Aktuální rozsah a kontrola 10. 11. 2026
+
+Aktuální funkce, technologie, API, způsob použití, firemní zavedení a omezení jsou v [README](../README.md). Znovu prošlo 21 Node testů a odpovídající skutečný browser průchod desktop/mobil. Jde o fiktivní portfolio projekt. Výsledky a případné opravy jsou v [QA](QA.md).
+
+Předchozí ověřený kód 52c3d93: [úspěšné GitHub Actions](https://github.com/OmegaCatt/shop-ops-kit/actions/runs/42730742859). Nový commit této revize má vlastní CI; aktuální stav je v hlavním protokolu portfolia. Níže uvedené historické plány nejsou seznam nehotových funkcí.
+
+<details>
+<summary>Historická projektová rozhodnutí a průběžné etapy</summary>
+
 # Etapa 10. 11. 2026 – SO-4/5
 
 **CSV i verzovaný JSON katalog; kontrolované návrhy textů.** Oba vstupy procházejí stejnými obchodními pravidly a schvalovací bránou. JSON má format shop-ops-catalog, version 1 a products s právě sedmi textovými poli: sku, market, title, price, currency, stock, url. Cenu a sklad uchovává jako text pro audit; neplatná hodnota se nepřevede na platnou. Do 2 MB / 10 000 položek. JSON zdroj se ukazuje cestou products[index]. Tlačítko „Aktuální katalog JSON“ stáhne aktuální normalizovaný katalog jako vzor; schválení nepřenáší.
@@ -25,3 +34,6 @@ Následují historické etapy.
 # Etapa 9. 11. 2026
 
 9 automatických testů prošlo. Nové případy kontrolují konfiguraci skladů/trhů, procentní hranici včetně zlevnění a vynechání nejednoznačných identit a různých měn. Browser QA ověřilo změnu skladového pravidla, zrušení prověření a mobilní 390 px bez přetečení a JS chyb. Kompletní schvalovací proces s důvody a platností výjimek je další etapou.
+
+
+</details>

@@ -16,7 +16,7 @@
 
 ## CSV a JSON kontrakt
 
-Do 2 MB / 10 000 řádků. Sedm polí: sku, market, title, price, currency, stock, url. CSV má hlavičku a skutečná čísla fyzických řádků. JSON má format shop-ops-catalog, version 1 a products s právě sedmi **textovými** hodnotami na položku, bez dalších objektů. Cenu a sklad ponechává jako původní text pro audit, neplatné obchodní hodnoty neopravuje převodem.
+Do 2 MB / 10 000 řádků. Sedm polí: sku, market, title, price, currency, stock, url. CSV má hlavičku a skutečná čísla fyzických řádků; interní/prototypové názvy jako _row, _location nebo __proto__ jsou rezervované a odmítají se. JSON má format shop-ops-catalog, version 1 a products s právě sedmi **textovými** hodnotami na položku, bez dalších objektů. Cenu a sklad ponechává jako původní text pro audit, neplatné obchodní hodnoty neopravuje převodem.
 
 ```json
 {"format":"shop-ops-catalog","version":1,"products":[{"sku":"A","market":"CZ","title":"Fiktivní monitor","price":"100","currency":"CZK","stock":"2","url":"/cz/a"}]}
@@ -57,7 +57,7 @@ pnpm qa
 pnpm build
 ```
 
-20 Node testů, původní schvalovací browser sada i nový JSON/textový průchod. Skutečná veřejná URL byla ověřena bez přihlášení, včetně kontroly a exportu návrhu, zneplatnění a mobilu. CI kódu [686b1e4](https://github.com/OmegaCatt/shop-ops-kit/actions/runs/42729974986) prošlo; [QA](docs/QA.md) uchovává podrobnosti a benchmarky. Sestavení pro veřejnou stránku kopíruje jen výslovně povolené statické soubory, žádný server/env/data adresář.
+21 Node testů, původní schvalovací browser sada i nový JSON/textový průchod. Skutečná veřejná URL byla ověřena bez přihlášení, včetně kontroly a exportu návrhu, zneplatnění a mobilu. CI kódu [686b1e4](https://github.com/OmegaCatt/shop-ops-kit/actions/runs/42729974986) prošlo; [QA](docs/QA.md) uchovává podrobnosti a benchmarky. Sestavení pro veřejnou stránku kopíruje jen výslovně povolené statické soubory, žádný server/env/data adresář.
 
 ## Zavedení do firmy
 
@@ -69,4 +69,4 @@ A fictional catalog audit and pre-publication workflow. CSV and versioned JSON n
 
 Source-only product copy templates require explicit human review; no AI, translation, invented benefits or live shop writes. Current facts, template and text must match before export. Source/rule changes invalidate decisions and drafts. A separate orders/shipment module uses prepared fixtures only. All processing stays in the browser; decisions are local and not authenticated or persistent across reloads.
 
-Run node server.mjs (4175) or use the public GitHub Pages app. 20 automated tests and two browser suites cover approval gates, JSON provenance, draft review, invalidation and exports on desktop/mobile. Company adoption needs authoritative source contracts, accounts, durable audit, retention and a tested target connector.
+Run node server.mjs (4175) or use the public GitHub Pages app. 21 automated tests and two browser suites cover approval gates, JSON provenance, draft review, invalidation and exports on desktop/mobile. Company adoption needs authoritative source contracts, accounts, durable audit, retention and a tested target connector.

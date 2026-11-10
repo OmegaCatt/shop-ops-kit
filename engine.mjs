@@ -32,6 +32,8 @@ export function parseDelimited(input) {
   if (cells.some(value => value.trim() !== '')) records.push({ cells, row: recordStart });
   if (!records.length) throw new Error('Soubor je prázdný.');
   const headers = records.shift().cells.map(value => value.trim().toLowerCase());
+  const reserved = new Set(['_row','_location','_format','__proto__','constructor','prototype']);
+  if (headers.some(name => reserved.has(name))) throw new Error('Rezervovaný název sloupce: interní metadata zdroje nelze importovat.');
   const required = ['sku', 'market', 'title', 'price', 'currency', 'stock', 'url'];
   const missing = required.filter(name => !headers.includes(name));
   if (missing.length) throw new Error(`Chybějící sloupce: ${missing.join(', ')}`);

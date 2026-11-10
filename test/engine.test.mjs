@@ -34,6 +34,16 @@ test('CSV import rejects incomplete headers and malformed records', () => {
   assert.throws(() => parseDelimited('sku;market;title;price;currency;stock;url\nA;CZ;"unfinished'), /Unclosed quote/);
 });
 
+test('CSV cannot overwrite physical source provenance or object internals',()=>{
+  const header='sku;market;title;price;currency;stock;url';
+  for(const column of ['_row','_location','_format','__proto__','constructor','prototype',' _ROW ']){
+    assert.throws(()=>parseDelimited(header+';'+column+'\nA;CZ;Test;100;CZK;2;/cz/a;999\n'),/Rezervovaný/,column);
+  }
+  const rows=parseDelimited(header+';material\nA;CZ;"Název\nna dvou řádcích";100;CZK;2;/cz/a;kov\nB;CZ;Druhý;50;CZK;1;/cz/b;dřevo\n');
+  assert.deepEqual(rows.map(row=>row._row),[2,4]);
+  assert.equal(rows[0].material,'kov');
+});
+
 test('catalog audit catches market, currency, title, stock and duplicate errors', () => {
   const result = auditCatalog(parseDelimited(sampleCatalog));
   const codes = new Set(result.issues.map(x => x.code));
