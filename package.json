@@ -7,7 +7,8 @@
     "start": "node server.mjs",
     "test": "node --test",
     "qa": "node scripts/qa.mjs && node scripts/qa-inputs.mjs",
-    "check": "node --check app.mjs && node --check workflow.mjs && node --check server.mjs && node --check catalog-input.mjs && node --check drafts.mjs && node --check draft-ui.mjs"
+    "check": "node --check app.mjs && node --check workflow.mjs && node --check server.mjs && node --check catalog-input.mjs && node --check drafts.mjs && node --check draft-ui.mjs",
+    "build": "node scripts/build.mjs"
   },
   "engines": {
     "node": ">=24"
