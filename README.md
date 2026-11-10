@@ -1,112 +1,72 @@
-**Veřejná funkční ukázka:** [shop-ops-kit](https://omegacatt.github.io/shop-ops-kit/) · [Galerie zaznamenaných serverových projektů](https://omegacatt.github.io/datadesk/portfolio/).
-
-# Etapa 10. 11. 2026 – SO-4/5
-
-**CSV i verzovaný JSON katalog; kontrolované návrhy textů.** Oba vstupy procházejí stejnými obchodními pravidly a schvalovací bránou. JSON má format shop-ops-catalog, version 1 a products s právě sedmi textovými poli: sku, market, title, price, currency, stock, url. Cenu a sklad uchovává jako text pro audit; neplatná hodnota se nepřevede na platnou. Do 2 MB / 10 000 položek. JSON zdroj se ukazuje cestou products[index]. Tlačítko „Aktuální katalog JSON“ stáhne aktuální normalizovaný katalog jako vzor; schválení nepřenáší.
-
-V panelu návrhů vyberte jednoznačné SKU/trh a krátkou nebo úplnou šablonu. Text pouze přebírá název, SKU, cenu/měnu a sklad; neprovádí překlad, nevymýšlí účinky ani specifikace a nevolá AI. Důležitý nález blokuje přípravu. Návrh ukáže zdrojová fakta a lokaci; k exportu vyžaduje potvrzení a důvod kontroly. SHA-256 propojuje text s fakty a variantou; změna katalogu, pravidel nebo reset návrhy zruší. Export JSON obsahuje pouze platné prověřené návrhy, nikoli publikaci do e-shopu. Název produktu může již ve vstupu obsahovat tvrzení; samotná šablona jeho pravdivost nezávisle neověřuje.
-
-20 Node testů prošlo. Dvě browser sady ověřily CSV schvalování i skutečný JSON import, lokaci, návrh, povinnou kontrolu, export, zneplatnění a zachování posledního platného katalogu po vadném importu. Desktop 1440 px a mobil 390 px bez přetečení/JS chyb; viz drafts.png a drafts-mobile.png. pnpm qa spustí obě sady; bez externích API. CI této nové etapy se ověřuje po publikaci.
-
-English: versioned JSON catalogs join CSV through the same audit/approval rules. JSON uses seven original string fields, bounded input and products[index] provenance. Source-only product copy templates (no AI, translation or invented claims) require human review and a reason, remain fingerprint-bound to the original facts, and export only reviewed current drafts. No live shop writes, authenticated approvals or imported orders. This is a local fictional-data portfolio workflow.
-
-## Historické etapy (aktuální stav výše)
-
 # Shop Ops Kit
 
-## Druhá etapa 9. 11. 2026: schválení konkrétních změn
+**Kontrola produktového katalogu před publikací: zdrojové rozdíly, obchodní pravidla, schvalování a prověřené textové návrhy.**
 
-Po načtení předchozího a aktuálního katalogu je možné rozhodovat o změnách SKU/trhu. **Prověření nálezu není schválení změny.** Schválení/zamítnutí vyžaduje důvod; důležitý nález schválení blokuje. Upozornění lze přijmout s odůvodněnou výjimkou na nejvýše 30 dnů, konec se vyhodnocuje v UTC. Expirovaná výjimka se do schváleného exportu nedostane.
+[Veřejná funkční aplikace](https://omegacatt.github.io/shop-ops-kit/) · [CI](https://github.com/OmegaCatt/shop-ops-kit/actions/workflows/ci.yml) · [Galerie portfolia](https://omegacatt.github.io/datadesk/portfolio/)
 
-Rozhodnutí váže SHA-256 na oba exporty a pravidla. Nový vstup, reset nebo změna pravidel rozhodnutí zruší. Export schválených změn CSV obsahuje původní i nové hodnoty, důvod, čas a případnou platnost výjimky. JSON zachová i zamítnuté, čekající, blokované a nejednoznačné položky. Důležitý nález na jiném nezměněném produktu není potvrzením kvality celého katalogu; jde o posouzení konkrétních změn, ne certifikaci dat.
+![Schvalování změn](docs/workflow.png)
 
-Jde o místní demonstrační postup bez účtů, skutečně ověřeného schvalovatele a zápisu do e-shopu. Rozhodnutí žijí v otevřené stránce; JSON je záznam, nikoli obnovitelný schvalovací případ. Výsledky do systému musí po vlastní kontrole převzít člověk.
+## Pracovní postup
 
-![Schválené a blokované změny](docs/workflow.png)
+1. Načíst aktuální a volitelně předchozí katalog jako CSV nebo verzovaný JSON. Soubory se zpracují výhradně v prohlížeči. Zkontrolovat SKU/trh, měnu, cenu, sklad, název a cestu produktu.
+2. Potvrdit obchodní předpoklady: společný sklad mezi trhy, očekávané země CZ/SK/DE a procentní mez změny ceny. Porovnat původní/nové hodnoty. Duplicitní identity se potichu neslučují.
+3. Prověřit nálezy. Toto označení **není schválení změny**. Důležitý nález schválení blokuje; upozornění vyžaduje důvod a výjimku do 30 dnů (UTC).
+4. Schválit nebo zamítnout konkrétní změnu SKU/trhu s důvodem. Export obsahuje jen platná schválení navázaná na SHA-256 obou vstupů a pravidel. Změna zdroje/pravidel je zruší.
+5. Stáhnout schválené změny CSV, JSON rozhodnutí/podkladů nebo standardní report a seznam zjištění. Textová CSV pole jsou chráněná proti vyhodnocení jako vzorec. Nic se nepublikuje do e-shopu.
 
-UI nyní nastavuje i očekávané trhy. Prázdný sklad se nesmí změnit na nulu; sklad vyžaduje bezpečně reprezentovatelné celé číslo a cena běžný desetinný zápis s nejvýše dvěma desetinnými místy. Hexadecimální a exponenciální zápisy se odmítají.
+## CSV a JSON kontrakt
 
-English: changes now have a reasoned approval/rejection workflow, SHA-256 input/rule binding, hard blockers, expiring medium-warning exceptions and approved-only CSV exports. Review flags are separate. This is a local, unauthenticated demonstration; no shop is updated, no approver identity is verified and exported decisions are not a restorable case.
+Do 2 MB / 10 000 řádků. Sedm polí: sku, market, title, price, currency, stock, url. CSV má hlavičku a skutečná čísla fyzických řádků. JSON má format shop-ops-catalog, version 1 a products s právě sedmi **textovými** hodnotami na položku, bez dalších objektů. Cenu a sklad ponechává jako původní text pro audit, neplatné obchodní hodnoty neopravuje převodem.
 
-## První etapa 9. 11. 2026: Nastavitelná katalogová pravidla
-
-Uživatel výslovně nastavuje, zda trhy sdílejí sklad, a mez procentní změny ceny proti předchozímu exportu. Změna pravidel ruší dosavadní prověření. Výchozí scénář používá společný sklad. Cenové srovnání nepřevádí měny a nevybírá z duplicitních SKU. Očekávané trhy lze nyní nastavit i v UI; report zachovává použitá pravidla.
-
-English: configurable shared-stock assumption and price-change threshold. Rule changes clear review flags; price comparisons exclude ambiguous identities and currency changes.
-
-**Dvě malé ukázkové aplikace pro provoz e-shopu:** kontrola produktového exportu pro CZ/SK/DE a porovnání objednávek se zásilkami. Vznikly jako portfolio pro roli, která kombinuje e-commerce, data, automatizaci a QA. Všechny dodané produkty a objednávky jsou fiktivní. Projekt není napojený na MITO LIGHT ani jiný skutečný obchod.
-
-![Přehled aplikace](docs/preview.png)
-
-## Spuštění
-
-Ověřeno na Node.js 24; běh nepotřebuje instalaci balíčků ani API klíč. Playwright je vývojová závislost pouze pro browser QA.
-
-```bash
-npm start
+```json
+{"format":"shop-ops-catalog","version":1,"products":[{"sku":"A","market":"CZ","title":"Fiktivní monitor","price":"100","currency":"CZK","stock":"2","url":"/cz/a"}]}
 ```
 
-Otevřete `http://127.0.0.1:4175`. Výchozí port se liší od OfferLens (4174), takže lze obě aplikace spustit současně. Testy: `npm test`. Pokud máte Node.js bez příkazu npm, použijte `node server.mjs` a `node --test`.
+Zdroj JSON se zobrazuje cestou products[index], nikoli jako předstíraný fyzický řádek. Tlačítko „Aktuální katalog JSON“ poskytne vzor i export normalizovaného katalogu; nepřenáší schválení. Oba formáty používají stejný audit a schvalovací bránu.
 
-## 1. Katalog a trhy
+## Návrhy produktových textů
 
-- Import CSV (čárka nebo středník, včetně uvozovaných hodnot; max. 2 MB / 10 000 řádků).
-- Porovnání předchozího a aktuálního katalogového CSV: přidané, odebrané a změněné SKU podle trhu, včetně změn ceny, skladu, názvu, měny a URL. Duplicitní identity se označí jako nejednoznačné; úplný rozdíl je v JSON reportu.
-- Kontrola duplicitního SKU na trhu, názvů, cen, měn, skladu, URL a chybějících jazykových mutací.
-- Každé zjištění obsahuje odkaz na původní číslo řádku a doporučený krok k ručnímu ověření.
-- Filtrování podle trhu a závažnosti, označení jako zkontrolované a export JSON reportu. Nový CSV export zjištění respektuje aktivní filtr závažnosti a zahrnuje aktuální stav prověření.
-- Stránkování katalogu po 100 řádcích a zjištění po 50 záznamech drží rozhraní použitelné i pro větší CSV; export obsahuje všechny výsledky.
+Vyberte jednoznačné SKU/trh a krátkou nebo úplnou šablonu. Nástroj ukáže zdrojová fakta a lokaci; přebírá pouze název, SKU, cenu/měnu a sklad. Nevytváří překlad, zdravotní účinky nebo chybějící parametry a nevolá AI. Důležitý nález blokuje přípravu.
 
-Požadované sloupce: `sku;market;title;price;currency;stock;url`. Trhy: CZ (CZK), SK (EUR), DE (EUR). Testovací katalog předpokládá stejný fyzický sklad pro všechny tři trhy; skutečný provoz může mít sklady oddělené, a pravidlo by se pak upravilo.
+Člověk porovná návrh s podkladem a potvrdí jej s důvodem. Exportují se pouze platné prověřené návrhy s otiskem faktů a varianty. Nový katalog, pravidla nebo reset návrhy odstraní. Texty jsou samostatný návrh, nikoli aktualizace katalogu. Převzatý zdrojový název může sám obsahovat tvrzení; šablona nezávisle neověřuje jeho pravdivost.
 
-## 2. Objednávky a zásilky
+## Druhý modul: objednávky × zásilky
 
-- Porovnání fiktivních objednávek a expedičních událostí.
-- Zpracování opakovaného `eventId` jen jednou (idempotence).
-- Zjištění zásilky bez objednávky, nesouladu SKU, expedice zrušené objednávky a chybějícího odeslání zaplacené objednávky.
-- Export kontrolního reportu. Tento modul používá připravená data; nemá import skutečných objednávek.
-- CSV výstup zjištění pro další práci v tabulce; při exportu se neutralizují vstupy, které by tabulkový procesor mohl vyhodnotit jako vzorec.
+Připravených 6 objednávek a 7 expedičních událostí ukazuje duplicitní eventId, zásilku bez objednávky, rozdílné SKU, zrušenou/neuhrazenou objednávku a množství. Opakovaný event se započte jednou, problém zůstane dohledatelný podle ID. Modul má **připravená data**, ne import vlastních objednávek nebo skutečné webhooky. Pro skutečnou komunikaci dvou místních služeb viz [FlowBridge](https://github.com/OmegaCatt/flowbridge).
 
-Rozklikávací panel v obou pohledech vysvětluje technologie, vstupy a postup kontroly. Na telefonu se ovládání exportu zalomí a širší tabulku lze posunout vodorovně.
+## Technologie a ukládání
 
-## Co uvidíte po spuštění
+JavaScript ES modules, HTML/CSS, vlastní CSV parser, JSON kontrakt, Web Crypto SHA-256 a node:test. Statický Node.js server nebo GitHub Pages; žádné externí API, klíč nebo LLM. Kontroly běží pravidlově v prohlížeči. Místní rozhodnutí a návrhy nepřetrvají reload; uchovejte si report. Export není podepsaný audit a neověřuje identitu schvalovatele. Ceny se kontrolují proti pravidlům, nikoli jako obchodně správná nabídka nebo účetnictví; měny se nepřepočítávají.
 
-Výchozí katalog obsahuje 5 produktů na 15 řádcích a 5 zjištění (3 důležitá). Ukázka objednávek obsahuje 6 objednávek a 7 expedičních událostí; jedna událost má opakované ID, proto se započítá jen 6 unikátních událostí. Modul zobrazí 6 zjištění k prověření. Kliknutí na „Označit jako zkontrolované“ mění stav pouze v otevřené stránce; při obnovení se ztratí. Stažený JSON report obsahuje i aktuální označení.
+## Spuštění a ověření
 
-## Praktický postup a technické řešení
+Node.js 24, běh bez instalace balíčků:
 
-V části katalogu načtěte předchozí a současný CSV export, porovnejte změny SKU po trzích a projděte nálezy podle závažnosti. Otevřete zdrojový řádek, označte prověřené položky a vyexportujte JSON nebo filtrované CSV. V části objednávek spusťte kontrolu připravených dat a podívejte se na rozdíly mezi objednávkou a expediční událostí. Tento druhý modul zatím neimportuje vlastní soubory.
+```powershell
+node server.mjs
+```
 
-Hotová verze používá **JavaScript ES modules, HTML/CSS, místní Node.js server, vlastní CSV zpracování a `node:test`**. Kontroly běží v prohlížeči podle pevných pravidel. Nejde o AI rozhodování, živý e-shop ani automatickou opravu katalogu. Odlišnost od DataDesku je důraz na změny produktového katalogu mezi exporty a vícejazyčné trhy.
+[127.0.0.1:4175](http://127.0.0.1:4175). Pro vývoj a prohlížečové testy:
 
-## Jak by šlo řešení použít ve firmě
+```powershell
+pnpm install --frozen-lockfile
+pnpm exec playwright install chromium
+pnpm test
+pnpm check
+pnpm qa
+pnpm build
+```
 
-Na začátku by stačily anonymizované katalogové exporty a dohoda o tom, zda každá země sdílí sklad, jaké jsou povolené měny a co je chyba oproti legitimní změně. Po ověření pravidel se dá výstup použít jako kontrolní seznam před publikací produktů. Firemní provoz by vyžadoval schválený konektor nebo pravidelný export, historii kontrol, přístupová práva a proces schválení změn. Import objednávek, automatické plánování a napojení na konkrétní e-shop jsou **možná rozšíření**.
+20 Node testů, původní schvalovací browser sada i nový JSON/textový průchod. Skutečná veřejná URL byla ověřena bez přihlášení, včetně kontroly a exportu návrhu, zneplatnění a mobilu. CI kódu [686b1e4](https://github.com/OmegaCatt/shop-ops-kit/actions/runs/42729974986) prošlo; [QA](docs/QA.md) uchovává podrobnosti a benchmarky. Sestavení pro veřejnou stránku kopíruje jen výslovně povolené statické soubory, žádný server/env/data adresář.
 
-## Rozhodnutí a limity
+## Zavedení do firmy
 
-- Pravidla pouze označují riziko. Neprovádějí automatické změny v cenách, skladech ani překladech.
-- Kontrola ceny ověřuje kladnou číselnou hodnotu a měnu trhu; neurčuje, zda je cena obchodně správná ani nepočítá směnné kurzy.
-- Veškeré zpracování probíhá lokálně v prohlížeči. Server pouze servíruje statické soubory na `127.0.0.1` a používá omezenou sadu cest a bezpečnostní hlavičky.
-- Dalším krokem pro skutečný provoz by byl import anonymizovaného exportu nebo samostatný konektor s přístupovými právy a testovacím prostředím.
-- AI byla použita jako vývojový asistent při návrhu, implementaci a kontrole. Zjištění v aplikaci vznikají deterministicky podle popsaných pravidel, ne pomocí LLM.
+Dohodnout, co je autoritativní sklad/ceník a které trhy mají produkt nabízet. Pilotovat na schválených exportech; nevyřešené identity ponechat k ručnímu rozhodnutí. Přidat firemní identity/role, trvalou historii, retenci, zálohy, skutečný schvalovací proces a sandbox konektoru. Teprve schválený a ověřený konektor může zapisovat do konkrétního e-shopu. Aplikace na Shoptetu nestojí a jeho znalost nepředstírá.
 
-## Ověření
+## English
 
-Aktuálně prošlo 16 automatických testů a opakovatelné browser QA. Historicky: sedm původních testů prošlo. V prohlížeči jsem načetl dva fiktivní katalogy, ověřil souhrn jedné přidané, jedné odebrané a jedné změněné položky a zkontroloval úplný JSON report. Nový průchod ověřil rozklikávací technický přehled, CSV podle filtru a mobilní šířku 390 px; původní kontrola prověřila také stránkování větších exportů.
+A fictional catalog audit and pre-publication workflow. CSV and versioned JSON normalize to the same checks for SKU/market, currency, price, stock, titles and paths. Compare two snapshots, configure business rules, record reviewed findings separately from approvals, and export only valid fingerprint-bound approved changes. Critical findings block approval; warnings need a bounded exception and reason.
 
-### Opakovatelná kontrola
+Source-only product copy templates require explicit human review; no AI, translation, invented benefits or live shop writes. Current facts, template and text must match before export. Source/rule changes invalidate decisions and drafts. A separate orders/shipment module uses prepared fixtures only. All processing stays in the browser; decisions are local and not authenticated or persistent across reloads.
 
-`node --test` prověřuje modul, `pnpm install --frozen-lockfile`, `pnpm exec playwright install chromium` a `pnpm qa` spustí browser QA nad skutečným serverem s CSP. `PLAYWRIGHT_EXECUTABLE_PATH` může vybrat místní prohlížeč. `node scripts/benchmark-workflow.mjs` změří 10 000 změn/20 000 nálezů; nejde o příslib výkonu jiného zařízení.
-
-## English summary
-
-Shop Ops Kit contains two portfolio demos for e-commerce operations: a CZ/SK/DE product feed auditor and an order-versus-shipment reconciler. The catalog tool compares previous and current CSV exports, flagging ambiguous duplicates. It links findings to source rows or event IDs and handles duplicate shipment events idempotently. A filtered, spreadsheet-safe CSV exports findings and review state; JSON retains the full report. An expandable in-app note explains the stack and process. All data is fictional; there is no live shop integration. The app runs on Node.js 24 without installing packages or using API keys. Playwright is a development-only QA dependency.
-
-### Workflow and stack
-
-Import previous and current product CSVs, inspect SKU changes by market, filter findings, review source rows, and export JSON or filtered CSV. The order/shipment module checks its prepared data; it does not import external orders. The implemented stack is JavaScript ES modules, HTML/CSS, a local Node.js static server, CSV processing, and built-in `node:test`. Findings are deterministic. Unlike DataDesk, this project focuses on cross-market product-feed changes as well as a small seeded fulfillment example.
-
-### Possible company adoption
-
-Start with anonymized catalog exports and agree on inventory, currency, and translation rules. After validating the checks against known cases, use the report as a pre-publication checklist. A shared workflow would need an approved connector or scheduled export, access control, review history, and change approval. Live shop integration, scheduled runs, and external order import are proposed additions, not implemented features.
+Run node server.mjs (4175) or use the public GitHub Pages app. 20 automated tests and two browser suites cover approval gates, JSON provenance, draft review, invalidation and exports on desktop/mobile. Company adoption needs authoritative source contracts, accounts, durable audit, retention and a tested target connector.
