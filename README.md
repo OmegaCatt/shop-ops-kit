@@ -1,3 +1,5 @@
+**Veřejná funkční ukázka:** [shop-ops-kit](https://omegacatt.github.io/shop-ops-kit/) · [Galerie zaznamenaných serverových projektů](https://omegacatt.github.io/datadesk/portfolio/).
+
 # Etapa 10. 11. 2026 – SO-4/5
 
 **CSV i verzovaný JSON katalog; kontrolované návrhy textů.** Oba vstupy procházejí stejnými obchodními pravidly a schvalovací bránou. JSON má format shop-ops-catalog, version 1 a products s právě sedmi textovými poli: sku, market, title, price, currency, stock, url. Cenu a sklad uchovává jako text pro audit; neplatná hodnota se nepřevede na platnou. Do 2 MB / 10 000 položek. JSON zdroj se ukazuje cestou products[index]. Tlačítko „Aktuální katalog JSON“ stáhne aktuální normalizovaný katalog jako vzor; schválení nepřenáší.
