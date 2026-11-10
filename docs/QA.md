@@ -29,3 +29,7 @@ Následují historické etapy.
 # Ověření 9. 11. 2026
 
 9 automatických testů prošlo. Nové případy kontrolují konfiguraci skladů/trhů, procentní hranici včetně zlevnění a vynechání nejednoznačných identit a různých měn. Browser QA ověřilo změnu skladového pravidla, zrušení prověření a mobilní 390 px bez přetečení a JS chyb. Kompletní schvalovací proces s důvody a platností výjimek je další etapou.
+
+## Veřejná dostupnost 10. 11. 2026
+
+https://omegacatt.github.io/shop-ops-kit/ skutečně ověřeno bez přihlášení: HTTP 200, katalog, stažení JSON a mobil bez JS chyb/přetečení. Celá nová sada JSON/draft průchodu prošla i proti této veřejné URL, včetně lidské kontroly, exportu a zneplatnění. SHOP_OPS_QA_BASE_URL je volitelné, CI standardně používá místní server.
