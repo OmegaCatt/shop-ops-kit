@@ -26,5 +26,7 @@ jobs:
         if: always()
         with:
           name: shop-ops-workflow-preview
-          path: docs/workflow*.png
+          path: |
+            docs/workflow*.png
+            docs/drafts*.png
           retention-days: 7

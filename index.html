@@ -6,14 +6,14 @@
   <meta name="description" content="Ukázková kontrola e-shopových dat a objednávek na fiktivních datech.">
   <meta name="theme-color" content="#3b2026">
   <title>Shop Ops Kit — kontrola e-shopových dat</title>
-  <link rel="stylesheet" href="/style.css">
-  <link rel="stylesheet" href="/red.css">
-  <script type="module" src="/app.mjs"></script>
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./red.css">
+  <script type="module" src="./app.mjs"></script>
 </head>
 <body>
   <div class="shell">
     <aside class="rail">
-      <a class="brand" href="/" aria-label="Shop Ops Kit, úvod"><span class="brand-mark">S<span>·</span>O</span><span>SHOP OPS<br><strong>KIT</strong></span></a>
+      <a class="brand" href="./" aria-label="Shop Ops Kit, úvod"><span class="brand-mark">S<span>·</span>O</span><span>SHOP OPS<br><strong>KIT</strong></span></a>
       <div class="rail-caption">PRACOVNÍ PROSTOR</div>
       <nav aria-label="Nástroje">
         <button class="nav-item selected" data-view="catalog" aria-current="page"><span class="nav-icon">▦</span><span>Katalog a trhy</span></button>
@@ -34,8 +34,8 @@
         <section class="content-grid">
           <div class="main-column">
             <section class="panel" id="catalog-panel">
-              <div class="panel-head"><div><p class="panel-kicker">VSTUPNÍ DATA</p><h2>Produktový export</h2></div><div class="catalog-actions"><button id="previous-button" class="button outline upload-button" type="button">Předchozí CSV</button><input id="previous-file" type="file" accept=".csv,text/csv" hidden><button id="catalog-button" class="button outline upload-button" type="button">Aktuální CSV</button><input id="catalog-file" type="file" accept=".csv,text/csv" hidden></div></div>
-              <div id="catalog-diff" class="catalog-diff" role="status" aria-live="polite"></div>
+              <div class="panel-head"><div><p class="panel-kicker">VSTUPNÍ DATA</p><h2>Produktový export</h2></div><div class="catalog-actions"><button id="previous-button" class="button outline upload-button" type="button">Předchozí CSV / JSON</button><input id="previous-file" type="file" accept=".csv,.json,text/csv,application/json" hidden><button id="catalog-button" class="button outline upload-button" type="button">Aktuální CSV / JSON</button><input id="catalog-file" type="file" accept=".csv,.json,text/csv,application/json" hidden></div></div>
+              <p class="panel-description">JSON: verze 1, pole products se sedmi textovými poli katalogu. Zdroj je označen cestou products[index]. Stejná pravidla a schvalování jako CSV. <button id="catalog-json" class="button outline">Aktuální katalog JSON</button></p><div id="catalog-diff" class="catalog-diff" role="status" aria-live="polite"></div>
               <div class="filterbar"><div class="segmented" aria-label="Filtr trhů"><button type="button" class="active" data-market="ALL">Vše</button><button type="button" data-market="CZ">CZ</button><button type="button" data-market="SK">SK</button><button type="button" data-market="DE">DE</button></div><span id="catalog-count" class="count-label"></span></div>
               <div class="table-wrap"><table><thead><tr><th>ŘÁDEK</th><th>SKU / NÁZEV</th><th>TRH</th><th>CENA</th><th>SKLAD</th></tr></thead><tbody id="catalog-table"></tbody></table></div><div class="catalog-pager"><button id="catalog-prev" type="button" aria-label="Předchozí stránka katalogu">←</button><span id="catalog-page"></span><button id="catalog-next" type="button" aria-label="Další stránka katalogu">→</button></div>
             </section>
@@ -47,7 +47,7 @@
               <div id="publication-list"></div>
               <div class="catalog-pager"><button id="publication-prev" aria-label="Předchozí změny">←</button><span id="publication-page"></span><button id="publication-next" aria-label="Další změny">→</button></div>
             </section>
-            <section class="panel hidden" id="orders-panel">
+            <section class="panel draft-panel" id="draft-panel"></section><section class="panel hidden" id="orders-panel">
               <div class="panel-head"><div><p class="panel-kicker">POROVNÁNÍ SYSTÉMŮ</p><h2>Objednávky × zásilky</h2></div><span class="tag">DEMO REPLAY</span></div>
               <p class="panel-description">Každá událost zásilky se započítá jen jednou podle ID. Chybné mapování a rozdíly v množství zůstanou viditelné ke kontrole.</p>
               <div class="table-wrap"><table><thead><tr><th>OBJEDNÁVKA</th><th>STAV</th><th>PRODUKT</th><th>OBJEDNÁNO</th><th>ODESLÁNO*</th></tr></thead><tbody id="orders-table"></tbody></table></div>

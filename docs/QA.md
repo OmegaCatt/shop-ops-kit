@@ -1,3 +1,15 @@
+# Etapa 10. 11. 2026 – SO-4/5
+
+**CSV i verzovaný JSON katalog; kontrolované návrhy textů.** Oba vstupy procházejí stejnými obchodními pravidly a schvalovací bránou. JSON má format shop-ops-catalog, version 1 a products s právě sedmi textovými poli: sku, market, title, price, currency, stock, url. Cenu a sklad uchovává jako text pro audit; neplatná hodnota se nepřevede na platnou. Do 2 MB / 10 000 položek. JSON zdroj se ukazuje cestou products[index]. Tlačítko „Aktuální katalog JSON“ stáhne aktuální normalizovaný katalog jako vzor; schválení nepřenáší.
+
+V panelu návrhů vyberte jednoznačné SKU/trh a krátkou nebo úplnou šablonu. Text pouze přebírá název, SKU, cenu/měnu a sklad; neprovádí překlad, nevymýšlí účinky ani specifikace a nevolá AI. Důležitý nález blokuje přípravu. Návrh ukáže zdrojová fakta a lokaci; k exportu vyžaduje potvrzení a důvod kontroly. SHA-256 propojuje text s fakty a variantou; změna katalogu, pravidel nebo reset návrhy zruší. Export JSON obsahuje pouze platné prověřené návrhy, nikoli publikaci do e-shopu. Název produktu může již ve vstupu obsahovat tvrzení; samotná šablona jeho pravdivost nezávisle neověřuje.
+
+20 Node testů prošlo. Dvě browser sady ověřily CSV schvalování i skutečný JSON import, lokaci, návrh, povinnou kontrolu, export, zneplatnění a zachování posledního platného katalogu po vadném importu. Desktop 1440 px a mobil 390 px bez přetečení/JS chyb; viz drafts.png a drafts-mobile.png. pnpm qa spustí obě sady; bez externích API. CI této nové etapy se ověřuje po publikaci.
+
+English: versioned JSON catalogs join CSV through the same audit/approval rules. JSON uses seven original string fields, bounded input and products[index] provenance. Source-only product copy templates (no AI, translation or invented claims) require human review and a reason, remain fingerprint-bound to the original facts, and export only reviewed current drafts. No live shop writes, authenticated approvals or imported orders. This is a local fictional-data portfolio workflow.
+
+## Historické etapy (aktuální stav výše)
+
 ## Ověřený vzdálený běh
 
 GitHub Actions úspěšně ověřily kód `fa77e1c`: [výsledek kontroly](https://github.com/OmegaCatt/shop-ops-kit/actions/runs/42686828209). Artefakt `shop-ops-workflow-preview` byl skutečně nahrán.

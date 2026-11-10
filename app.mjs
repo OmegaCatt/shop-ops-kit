@@ -1,3 +1,5 @@
+import {parseCatalog,catalogJson} from './catalog-input.mjs';
+import {mountDrafts} from './draft-ui.mjs';
 import {preparePublication,decide,decisionStatus,publicationReport,approvedCsv} from './workflow.mjs';
 import { auditCatalog, compareCatalog, findingsCsv, parseDelimited, reconcileOrders, priceChangeChecks } from './engine.mjs';
 import { sampleCatalog, sampleOrders, sampleShipments } from './fixtures.mjs';
@@ -5,6 +7,7 @@ import { sampleCatalog, sampleOrders, sampleShipments } from './fixtures.mjs';
 const $ = selector => document.querySelector(selector);
 const state = { view: 'catalog', market: 'ALL', severity: 'all', page: 1, findingPage: 1, rows: parseDelimited(sampleCatalog), previousRows: null, reviewed: new Set(), isDemo: true, publication:null, decisions:new Map(), publicationGeneration:0, publicationPage:1, inputEpoch:0, catalogRead:0, previousRead:0 };
 const rules={sharedStock:true,expectedMarkets:['CZ','SK','DE'],threshold:20};
+const draftUI=mountDrafts($('#draft-panel'),()=>state.rows);
 const catalog = () => {const result=auditCatalog(state.rows,rules);if(state.previousRows)result.issues.push(...priceChangeChecks(state.previousRows,state.rows,rules.threshold));return result;};
 const orders = () => reconcileOrders(sampleOrders, sampleShipments);
 const el = (tag, className, value) => { const node = document.createElement(tag); if (className) node.className = className; if (value !== undefined) node.textContent = value; return node; };
@@ -55,7 +58,7 @@ function renderCatalog(result) {
   const flagged = new Set(result.issues.flatMap(issue => issue.refs.map(String)));
   $('#catalog-table').replaceChildren(...visible.slice(start, start + perPage).map(row => {
     const tr = el('tr');
-    const id = el('td', '', String(row._row));
+    const id = el('td', '', String(row._location||row._row));
     const product = el('td'); product.append(el('span', 'sku', row.sku || '—'), el('span', 'title-sub', row.title || 'Název chybí'));
     const market = el('td'); market.append(el('span', `market-pill ${row.market.toLowerCase()}`, row.market || '—'));
     const price = el('td', '', `${row.price || '—'} ${row.currency || ''}`);
@@ -99,7 +102,7 @@ function renderFindings(result) {
   $('#findings').replaceChildren(...visible.slice((state.findingPage - 1) * perPage, state.findingPage * perPage).map(issue => {
     const card = el('article', `finding${state.reviewed.has(issue.id) ? ' reviewed' : ''}`);
     const top = el('div', 'finding-top');
-    top.append(el('span', `severity ${issue.severity}`, issue.severity === 'high' ? 'DŮLEŽITÉ' : 'K OVĚŘENÍ'), el('span', 'ref', `${state.view === 'catalog' ? 'ř.' : 'ID'} ${issue.refs.join(', ')}`));
+    top.append(el('span', `severity ${issue.severity}`, issue.severity === 'high' ? 'DŮLEŽITÉ' : 'K OVĚŘENÍ'), el('span', 'ref', state.view==='catalog'?issue.refs.map(ref=>state.rows.find(row=>String(row._row)===String(ref))?._location||('ř. '+ref)).join(', '):'ID '+issue.refs.join(', ')));
     const button = el('button', 'review-button', state.reviewed.has(issue.id) ? '✓ Zkontrolováno' : 'Označit jako zkontrolované');
     button.type = 'button'; button.setAttribute('aria-pressed', state.reviewed.has(issue.id) ? 'true' : 'false');
     button.addEventListener('click', () => { state.reviewed.has(issue.id) ? state.reviewed.delete(issue.id) : state.reviewed.add(issue.id); renderFindings(result); });
@@ -119,6 +122,7 @@ function render() {
   $('#catalog-panel').classList.toggle('hidden', !isCatalog);
   $('#orders-panel').classList.toggle('hidden', isCatalog);
   $('#publication-panel').classList.toggle('hidden', !isCatalog);
+  $('#draft-panel').classList.toggle('hidden',!isCatalog);draftUI.refresh();
   if(isCatalog)renderPublication();
   for (const button of document.querySelectorAll('.nav-item')) {
     const active = button.dataset.view === state.view;
@@ -139,7 +143,7 @@ $('#finding-next').addEventListener('click', () => { state.findingPage++; render
 $('#reset-button').addEventListener('click', () => { state.inputEpoch++; state.rows = parseDelimited(sampleCatalog); state.previousRows = null; state.isDemo = true; state.reviewed.clear(); state.market = 'ALL'; state.page = 1; state.findingPage = 1; document.querySelectorAll('[data-market]').forEach(x => x.classList.toggle('active', x.dataset.market === 'ALL')); refreshPublication();render(); toast('Fiktivní ukázka obnovena.'); });
 async function readCatalogFile(file) {
   if (file.size > 2_000_000) throw new Error('Soubor je příliš velký (limit 2 MB).');
-  const rows = parseDelimited(await file.text());
+  const rows = parseCatalog(await file.text(),file.name);
   if (rows.length > 10_000) throw new Error('Maximálně 10 000 řádků.');
   return rows;
 }
@@ -209,6 +213,7 @@ function renderPublication(){
   }
 }
 async function refreshPublication(){
+  draftUI.invalidate();
   const generation=++state.publicationGeneration;state.publication=null;state.decisions.clear();state.publicationPage=1;renderPublication();
   if(!state.previousRows)return;
   try{const context=await preparePublication(state.previousRows,state.rows,rules);if(generation!==state.publicationGeneration)return;state.publication=context;renderPublication();}
@@ -228,3 +233,5 @@ const marketInputs=new Map();for(const key of ['CZ','SK','DE']){const checkbox=e
 const saveRules=el('button','','Použít pravidla');saveRules.type='button';saveRules.addEventListener('click',()=>{const value=Number(threshold.value);if(!threshold.value||!Number.isFinite(value)||value<0||value>10000){toast('Zadejte limit od 0 do 10 000 %.');return}const markets=[...marketInputs].filter(([,input])=>input.checked).map(([key])=>key);if(!markets.length){toast('Vyberte alespoň jeden očekávaný trh.');return}rules.sharedStock=shared.checked;rules.threshold=value;rules.expectedMarkets=markets;state.reviewed.clear();refreshPublication();render();toast('Pravidla změněna; dřívější prověření byla zrušena.');});settings.append(saveRules);
 document.querySelector('main').prepend(settings);
 render();
+
+$('#catalog-json').onclick=()=>downloadPublication('shop-ops-katalog.json',catalogJson(state.rows),'application/json');

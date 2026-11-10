@@ -84,3 +84,5 @@ footer { border-color: #eadfdf; color: #a78f92; }
 .publication-change>label input{padding:7px;border:1px solid #d9c9c9;border-radius:4px;font:inherit}
 .publication-actions{padding:12px 0 0}.publication-toolbar .button{white-space:normal}
 .publication-actions button:disabled{opacity:.45;cursor:not-allowed}
+
+.draft-panel{padding:22px}.draft-panel select,.draft-panel input{font:inherit;max-width:100%;padding:9px;border:1px solid #c8bbc0;border-radius:4px;margin:7px}.draft-panel pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f8f5f5;padding:14px}.draft-panel label{display:block;margin:12px 0}.draft-panel button{margin:7px}.draft-panel h2{margin-bottom:12px}#draft-list p{padding:10px;border-left:3px solid #a63946}#draft-status{color:#773844}

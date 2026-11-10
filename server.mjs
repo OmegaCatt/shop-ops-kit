@@ -12,6 +12,7 @@ const files = new Map([
   ['/app.mjs', ['app.mjs', 'text/javascript; charset=utf-8']],
   ['/engine.mjs', ['engine.mjs', 'text/javascript; charset=utf-8']],
   ['/workflow.mjs', ['workflow.mjs', 'text/javascript; charset=utf-8']],
+  ...['catalog-input.mjs','drafts.mjs','draft-ui.mjs'].map(name=>['/'+name,[name,'text/javascript; charset=utf-8']]),
   ['/fixtures.mjs', ['fixtures.mjs', 'text/javascript; charset=utf-8']],
 ]);
 
