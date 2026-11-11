@@ -1,3 +1,11 @@
+# UX-1 až UX-7 – 11. 11. 2026
+
+Místně ověřené unit testy: **22 Node**.
+
+Značka SO a navigační SVG ikony mají pevné rozměry a zarovnání. Mobilní ikonová navigace má výslovné přístupné názvy.
+
+Všech sedm aplikací má první přístupný dialog a stálé ovládání nápovědy v hlavičce. Playwright ověřuje skutečný první vstup, obě části, GitHub odkaz, Tab/Shift+Tab, Escape, návrat fokusu, potvrzení po reloadu a mobil. CompanyAtlas čeká s přihlášením na zavření úvodu; hlavička se testuje po přihlášení. Legacy pracovní průchody pokračují po skutečném zavření úvodu. Aktuální commit, CI a přesný rozsah ověření této etapy jsou vedené v hlavním Portfolio_PROGRESS.md; starší zápisy níže jsou historické.
+
 # Ukázka 11. 11. 2026 – DEMO-4/6
 
 22 Node testů a tři browser sady: existující schvalování, JSON/návrhy a nový průchod tří změn. Nová sada ověřuje nulové předběžné schválení, skutečné rozhodnutí, blokovanou cenu, export jediné schválené položky, demo příznaky, potvrzení/zrušení při vlastních datech i textovém návrhu a mobil. Screenshoty demo-workflow.png a demo-mobile.png jsou z těchto skutečných akcí. Nejde o zápis do e-shopu. Přesná vzdálená evidence je v hlavním protokolu po publikaci.

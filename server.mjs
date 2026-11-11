@@ -5,6 +5,8 @@ import { dirname, join } from 'node:path';
 
 const root = dirname(fileURLToPath(import.meta.url));
 const files = new Map([
+  ['/guide.js',['guide.js','text/javascript; charset=utf-8']],
+  ['/guide.css',['guide.css','text/css; charset=utf-8']],
   ['/', ['index.html', 'text/html; charset=utf-8']],
   ['/index.html', ['index.html', 'text/html; charset=utf-8']],
   ['/style.css', ['style.css', 'text/css; charset=utf-8']],

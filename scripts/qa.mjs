@@ -1,3 +1,4 @@
+import {verifyGuide,verifyGuideLinks,dismissGuide} from './guide-qa.mjs';
 import {createStaticServer} from '../server.mjs';
 import {chromium} from 'playwright';
 import {mkdir,readFile} from 'node:fs/promises';
@@ -10,7 +11,7 @@ let browser;
 try{
  browser=await chromium.launch({headless:true,...(process.env.PLAYWRIGHT_EXECUTABLE_PATH?{executablePath:process.env.PLAYWRIGHT_EXECUTABLE_PATH}:{})});
  const p=await browser.newPage({viewport:{width:1440,height:1000},acceptDownloads:true}),errors=[];p.on('pageerror',error=>errors.push(error.message));
- await p.goto(`http://127.0.0.1:${server.address().port}`);
+ await p.goto(`http://127.0.0.1:${server.address().port}`);await verifyGuide(p,{});
  const rules=p.locator('details').filter({hasText:'Pravidla kontroly katalogu'});await rules.locator('summary').click();
  await p.getByLabel('Očekávaný trh SK',{exact:true}).uncheck();await p.getByLabel('Očekávaný trh DE',{exact:true}).uncheck();await p.getByRole('button',{name:'Použít pravidla',exact:true}).click();
  const header='sku;market;title;price;currency;stock;url\n';

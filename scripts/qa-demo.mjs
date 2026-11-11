@@ -1,3 +1,4 @@
+import {verifyGuide,verifyGuideLinks,dismissGuide} from './guide-qa.mjs';
 import assert from 'node:assert/strict';
 import {readFile,mkdir} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
@@ -8,7 +9,8 @@ await new Promise(r=>server.listen(0,'127.0.0.1',r));let browser;
 try{
  browser=await chromium.launch({headless:true,...(process.env.PLAYWRIGHT_EXECUTABLE_PATH?{executablePath:process.env.PLAYWRIGHT_EXECUTABLE_PATH}:{})});
  const p=await browser.newPage({viewport:{width:1440,height:1000},acceptDownloads:true}),errors=[];p.on('pageerror',e=>errors.push(e.message));
- await p.goto(process.env.SHOP_OPS_QA_BASE_URL||`http://127.0.0.1:${server.address().port}`);
+ await p.goto(process.env.SHOP_OPS_QA_BASE_URL||`http://127.0.0.1:${server.address().port}`);await verifyGuide(p,{});
+ const checkIcons=async()=>{assert.equal(await p.locator('.brand-mark').innerText(),'SO');assert.equal(await p.getByRole('button',{name:'Katalog a trhy',exact:true}).count(),1);for(const icon of await p.locator('.nav-icon svg').all()){const valid=await icon.evaluate(svg=>{const a=svg.getBoundingClientRect(),b=svg.closest('button').getBoundingClientRect();return Math.abs(a.width-22)<1&&Math.abs(a.height-22)<1&&Math.abs((a.top+a.height/2)-(b.top+b.height/2))<1&&a.left>=b.left&&a.right<=b.right});assert.equal(valid,true)}};await checkIcons();
  const load=async()=>{await p.locator('#demo-publication').click();await p.waitForFunction(()=>document.querySelectorAll('.publication-change').length===3&&!document.querySelector('#publication-json').disabled)};
  const downloadJSON=async selector=>{const wait=p.waitForEvent('download');await p.locator(selector).click();return JSON.parse(await readFile(await(await wait).path(),'utf8'))};
  const card=key=>p.locator('.publication-change').filter({has:p.locator('strong').filter({hasText:key})});
@@ -22,7 +24,7 @@ try{
  const wait=p.waitForEvent('download');await p.locator('#approved-csv').click();const csv=await readFile(await(await wait).path(),'utf8');assert.equal(csv.trim().split(/\r?\n/).length,2);assert.doesNotMatch(csv,/DOCK-1|KEY-1/);
  p.once('dialog',dialog=>dialog.dismiss());await p.locator('#demo-publication').click();assert.equal((await downloadJSON('#publication-json')).summary.approved,1);
  await p.locator('#toast').waitFor({state:'hidden'});await p.locator('#publication-panel').scrollIntoViewIfNeeded();await mkdir(root+'docs',{recursive:true});await p.screenshot({path:root+'docs/demo-workflow.png'});
- await p.setViewportSize({width:390,height:844});await p.locator('.demo-walkthrough').scrollIntoViewIfNeeded();assert.equal(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);await p.screenshot({path:root+'docs/demo-mobile.png'});await p.setViewportSize({width:1440,height:1000});
+ await p.setViewportSize({width:390,height:844});await checkIcons();await p.locator('.demo-walkthrough').scrollIntoViewIfNeeded();assert.equal(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);await p.screenshot({path:root+'docs/demo-mobile.png'});await p.setViewportSize({width:1440,height:1000});
  p.once('dialog',dialog=>dialog.accept());await load();assert.equal((await downloadJSON('#publication-json')).summary.approved,0);
  // A prepared copy draft on fictional data still counts as work.
  await p.locator('#draft-product').selectOption('MON-27|CZ');await p.locator('#draft-create').click();await p.locator('#draft-preview pre').last().waitFor();

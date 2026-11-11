@@ -1,3 +1,9 @@
+# UX-1 až UX-7 – 11. 11. 2026
+
+Značka SO a navigační SVG ikony mají pevné rozměry a zarovnání. Mobilní ikonová navigace má výslovné přístupné názvy.
+
+Všech sedm aplikací má první přístupný dialog a stálé ovládání nápovědy v hlavičce. Playwright ověřuje skutečný první vstup, obě části, GitHub odkaz, Tab/Shift+Tab, Escape, návrat fokusu, potvrzení po reloadu a mobil. CompanyAtlas čeká s přihlášením na zavření úvodu; hlavička se testuje po přihlášení. Legacy pracovní průchody pokračují po skutečném zavření úvodu. Aktuální commit, CI a přesný rozsah ověření této etapy jsou vedené v hlavním Portfolio_PROGRESS.md; starší zápisy níže jsou historické.
+
 # Etapa ukázky 11. 11. 2026
 
 Jedním tlačítkem načtený pár fiktivních exportů: tři změny, nulové předběžné schválení, zachování vlastní práce při zrušení potvrzení. 22 testů a tři browser sady prošly, včetně zpožděného čtení souboru, které po přepnutí nesmí přepsat ukázku. Viz README a QA.

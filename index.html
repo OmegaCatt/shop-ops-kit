@@ -8,16 +8,16 @@
   <title>Shop Ops Kit — kontrola e-shopových dat</title>
   <link rel="stylesheet" href="./style.css">
   <link rel="stylesheet" href="./red.css">
-  <script type="module" src="./app.mjs"></script>
-</head>
+  <script src="./guide.js" defer></script><script type="module" src="./app.mjs"></script>
+<link rel="stylesheet" href="./guide.css"></head>
 <body>
   <div class="shell">
     <aside class="rail">
-      <a class="brand" href="./" aria-label="Shop Ops Kit, úvod"><span class="brand-mark">S<span>·</span>O</span><span>SHOP OPS<br><strong>KIT</strong></span></a>
+      <a class="brand" href="./" aria-label="Shop Ops Kit, úvod"><span class="brand-mark" aria-hidden="true">SO</span><span>SHOP OPS<br><strong>KIT</strong></span></a>
       <div class="rail-caption">PRACOVNÍ PROSTOR</div>
       <nav aria-label="Nástroje">
-        <button class="nav-item selected" data-view="catalog" aria-current="page"><span class="nav-icon">▦</span><span>Katalog a trhy</span></button>
-        <button class="nav-item" data-view="orders"><span class="nav-icon">⇄</span><span>Objednávky</span></button>
+        <button class="nav-item selected" aria-label="Katalog a trhy" data-view="catalog" aria-current="page"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M3 9h18M9 9v11"/></svg></span><span>Katalog a trhy</span></button>
+        <button class="nav-item" aria-label="Objednávky" data-view="orders"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h15m-4-4 4 4-4 4M20 17H5m4-4-4 4 4 4"/></svg></span><span>Objednávky</span></button>
       </nav>
       <div class="rail-bottom"><span class="demo-dot"></span> Ukázková data<br><small>Žádné spojení s e-shopem</small></div>
     </aside>

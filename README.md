@@ -1,5 +1,12 @@
 # Shop Ops Kit
 
+## Orientace v aplikaci (11. 11. 2026)
+
+Při první návštěvě se otevře stručný návod. Po zavření si aplikace v tomto prohlížeči zapamatuje potvrzení; změna nemá vliv na obchodní data. V hlavičce lze kdykoli otevřít **Jak aplikaci používat** a **Technické informace**. Oba obsahy odkazují na úplný README zde na GitHubu. Pokud úložiště prohlížeče není dostupné, návod lze zavřít a aplikace dál funguje.
+
+Značka SO a navigační SVG ikony mají pevné rozměry a zarovnání. Mobilní ikonová navigace má výslovné přístupné názvy.
+
+
 **Kontrola produktového katalogu před publikací: zdrojové rozdíly, obchodní pravidla, schvalování a prověřené textové návrhy.**
 
 [Veřejná funkční aplikace](https://omegacatt.github.io/shop-ops-kit/) · [CI](https://github.com/OmegaCatt/shop-ops-kit/actions/workflows/ci.yml) · [Galerie portfolia](https://omegacatt.github.io/datadesk/portfolio/)
@@ -70,6 +77,9 @@ pnpm build
 Dohodnout, co je autoritativní sklad/ceník a které trhy mají produkt nabízet. Pilotovat na schválených exportech; nevyřešené identity ponechat k ručnímu rozhodnutí. Přidat firemní identity/role, trvalou historii, retenci, zálohy, skutečný schvalovací proces a sandbox konektoru. Teprve schválený a ověřený konektor může zapisovat do konkrétního e-shopu. Aplikace na Shoptetu nestojí a jeho znalost nepředstírá.
 
 ## English
+
+First-time visitors see a keyboard-accessible guide; persistent header buttons reopen usage and technical information with a link to this README. Acknowledgement is browser-local and does not store business records. The SO mark and SVG navigation icons have stable sizing/alignment, including accessible names in compact mobile navigation.
+
 
 A fictional catalog audit and pre-publication workflow. CSV and versioned JSON normalize to the same checks for SKU/market, currency, price, stock, titles and paths. Compare two snapshots, configure business rules, record reviewed findings separately from approvals, and export only valid fingerprint-bound approved changes. Critical findings block approval; warnings need a bounded exception and reason.
 
