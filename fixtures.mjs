@@ -34,3 +34,9 @@ export const sampleShipments = [
   { eventId: 'EV-05', orderId: 'O-9999', sku: 'CASE-1', qty: 1, carrier: 'PPL' },
   { eventId: 'EV-06', orderId: 'O-2405', sku: 'STAND-1', qty: 1, carrier: 'DPD' },
 ];
+
+// Focused fictional before/after exports for the review workflow. No decisions are prepared.
+export function publicationDemo(){
+ const header='sku;market;title;price;currency;stock;url\n';
+ return {previous:header+'MON-27;CZ;Monitor 27 palců;4000;CZK;5;/cz/monitor-27\nDOCK-1;CZ;Dokovací stanice;2000;CZK;8;/cz/dock-1\nKEY-1;CZ;Klávesnice;600;CZK;12;/cz/keyboard-1\n',current:header+'MON-27;CZ;Monitor 27 palců – černý;4200;CZK;5;/cz/monitor-27\nDOCK-1;CZ;Dokovací stanice;20000;CZK;8;/cz/dock-1\nKEY-1;CZ;;600;CZK;12;/cz/keyboard-1\n',rules:{sharedStock:true,expectedMarkets:['CZ'],threshold:20}};
+}

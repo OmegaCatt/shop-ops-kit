@@ -6,6 +6,12 @@
 
 ![Schvalování změn](docs/workflow.png)
 
+## Ukázka za dvě minuty
+
+„Načíst ukázku tří změn“ připraví dva fiktivní exporty: monitor (název a +5 % ceny), dokovací stanici (+900 %) a klávesnici bez názvu. Nic není předem schválené. Monitor po kontrole schvalte s důvodem, stanice zůstane blokovaná, klávesnice vyžaduje opravu nebo posouzenou omezenou výjimku. CSV export obsahuje jen platně schválené změny.
+
+Vlastní data, rozhodnutí a připravené textové návrhy se před nahrazením potvrzují; zrušení je zachová. Report správně rozlišuje připravené a vlastní podklady. Ukázka nic nepublikuje do e-shopu.
+
 ## Pracovní postup
 
 1. Načíst aktuální a volitelně předchozí katalog jako CSV nebo verzovaný JSON. Soubory se zpracují výhradně v prohlížeči. Zkontrolovat SKU/trh, měnu, cenu, sklad, název a cestu produktu.
@@ -57,7 +63,7 @@ pnpm qa
 pnpm build
 ```
 
-21 Node testů, původní schvalovací browser sada i nový JSON/textový průchod. Skutečná veřejná URL byla ověřena bez přihlášení, včetně kontroly a exportu návrhu, zneplatnění a mobilu. CI kódu [686b1e4](https://github.com/OmegaCatt/shop-ops-kit/actions/runs/42729974986) prošlo; [QA](docs/QA.md) uchovává podrobnosti a benchmarky. Sestavení pro veřejnou stránku kopíruje jen výslovně povolené statické soubory, žádný server/env/data adresář.
+22 Node testů, původní schvalovací browser sada i nový JSON/textový průchod. Skutečná veřejná URL byla ověřena bez přihlášení, včetně kontroly a exportu návrhu, zneplatnění a mobilu. CI kódu [686b1e4](https://github.com/OmegaCatt/shop-ops-kit/actions/runs/42729974986) prošlo; [QA](docs/QA.md) uchovává podrobnosti a benchmarky. Sestavení pro veřejnou stránku kopíruje jen výslovně povolené statické soubory, žádný server/env/data adresář.
 
 ## Zavedení do firmy
 
@@ -69,4 +75,6 @@ A fictional catalog audit and pre-publication workflow. CSV and versioned JSON n
 
 Source-only product copy templates require explicit human review; no AI, translation, invented benefits or live shop writes. Current facts, template and text must match before export. Source/rule changes invalidate decisions and drafts. A separate orders/shipment module uses prepared fixtures only. All processing stays in the browser; decisions are local and not authenticated or persistent across reloads.
 
-Run node server.mjs (4175) or use the public GitHub Pages app. 21 automated tests and two browser suites cover approval gates, JSON provenance, draft review, invalidation and exports on desktop/mobile. Company adoption needs authoritative source contracts, accounts, durable audit, retention and a tested target connector.
+The one-click walkthrough loads three fictional changes without preapproving anything. It protects custom inputs and prepared drafts with a confirmation, demonstrates a blocked price and exports only actual approvals.
+
+Run node server.mjs (4175) or use the public GitHub Pages app. 22 automated tests and three browser suites cover approval gates, JSON provenance, draft review, invalidation and exports on desktop/mobile. Company adoption needs authoritative source contracts, accounts, durable audit, retention and a tested target connector.

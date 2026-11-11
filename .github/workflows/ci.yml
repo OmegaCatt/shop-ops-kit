@@ -29,4 +29,5 @@ jobs:
           path: |
             docs/workflow*.png
             docs/drafts*.png
+            docs/demo*.png
           retention-days: 7

@@ -2,12 +2,13 @@ import {parseCatalog,catalogJson} from './catalog-input.mjs';
 import {mountDrafts} from './draft-ui.mjs';
 import {preparePublication,decide,decisionStatus,publicationReport,approvedCsv} from './workflow.mjs';
 import { auditCatalog, compareCatalog, findingsCsv, parseDelimited, reconcileOrders, priceChangeChecks } from './engine.mjs';
-import { sampleCatalog, sampleOrders, sampleShipments } from './fixtures.mjs';
+import { sampleCatalog, sampleOrders, sampleShipments, publicationDemo } from './fixtures.mjs';
 
 const $ = selector => document.querySelector(selector);
-const state = { view: 'catalog', market: 'ALL', severity: 'all', page: 1, findingPage: 1, rows: parseDelimited(sampleCatalog), previousRows: null, reviewed: new Set(), isDemo: true, publication:null, decisions:new Map(), publicationGeneration:0, publicationPage:1, inputEpoch:0, catalogRead:0, previousRead:0 };
+const state = { view: 'catalog', market: 'ALL', severity: 'all', page: 1, findingPage: 1, rows: parseDelimited(sampleCatalog), previousRows: null, reviewed: new Set(), isDemo: true, demoScenario:false, publication:null, decisions:new Map(), publicationGeneration:0, publicationPage:1, inputEpoch:0, catalogRead:0, previousRead:0 };
 const rules={sharedStock:true,expectedMarkets:['CZ','SK','DE'],threshold:20};
 const draftUI=mountDrafts($('#draft-panel'),()=>state.rows);
+const catalogIsDemo=()=>state.isDemo&&(state.previousRows===null||state.demoScenario);
 const catalog = () => {const result=auditCatalog(state.rows,rules);if(state.previousRows)result.issues.push(...priceChangeChecks(state.previousRows,state.rows,rules.threshold));return result;};
 const orders = () => reconcileOrders(sampleOrders, sampleShipments);
 const el = (tag, className, value) => { const node = document.createElement(tag); if (className) node.className = className; if (value !== undefined) node.textContent = value; return node; };
@@ -113,7 +114,7 @@ function renderFindings(result) {
 
 function render() {
   const isCatalog = state.view === 'catalog';
-  const isDemo=!isCatalog||(state.isDemo&&state.previousRows===null);
+  const isDemo=!isCatalog||catalogIsDemo();
   $('.notice p').textContent=isDemo?'Fiktivní ukázka. Produkty, objednávky i zásilky jsou připravená testovací data. Žádné spojení s e-shopem.':'Pracujete s importovanými podklady. Soubory se zpracovávají pouze v tomto prohlížeči a nikam se neposílají. Rozhodnutí jsou místní a po zavření stránky se ztratí; uložte si report.';
   const result = isCatalog ? catalog() : orders();
   $('#view-title').textContent = isCatalog ? 'Katalog pod kontrolou.' : 'Objednávky bez překvapení.';
@@ -140,7 +141,7 @@ $('#catalog-next').addEventListener('click', () => { state.page++; render(); });
 document.querySelectorAll('[data-severity]').forEach(button => button.addEventListener('click', () => { state.severity = button.dataset.severity; state.findingPage = 1; document.querySelectorAll('[data-severity]').forEach(x => x.classList.toggle('active', x === button)); render(); }));
 $('#finding-prev').addEventListener('click', () => { state.findingPage--; render(); });
 $('#finding-next').addEventListener('click', () => { state.findingPage++; render(); });
-$('#reset-button').addEventListener('click', () => { state.inputEpoch++; state.rows = parseDelimited(sampleCatalog); state.previousRows = null; state.isDemo = true; state.reviewed.clear(); state.market = 'ALL'; state.page = 1; state.findingPage = 1; document.querySelectorAll('[data-market]').forEach(x => x.classList.toggle('active', x.dataset.market === 'ALL')); refreshPublication();render(); toast('Fiktivní ukázka obnovena.'); });
+$('#reset-button').addEventListener('click', () => { state.inputEpoch++; state.rows = parseDelimited(sampleCatalog); state.previousRows = null; state.isDemo = true; state.demoScenario=false; state.reviewed.clear(); state.market = 'ALL'; state.page = 1; state.findingPage = 1; document.querySelectorAll('[data-market]').forEach(x => x.classList.toggle('active', x.dataset.market === 'ALL')); refreshPublication();render(); toast('Fiktivní ukázka obnovena.'); });
 async function readCatalogFile(file) {
   if (file.size > 2_000_000) throw new Error('Soubor je příliš velký (limit 2 MB).');
   const rows = parseCatalog(await file.text(),file.name);
@@ -152,7 +153,7 @@ $('#catalog-button').addEventListener('click', () => $('#catalog-file').click())
 $('#previous-file').addEventListener('change', async event => {
   const file = event.target.files?.[0]; if (!file) return;
   const epoch=state.inputEpoch,sequence=++state.previousRead;
-  try { const rows=await readCatalogFile(file);if(epoch!==state.inputEpoch||sequence!==state.previousRead)return;state.previousRows=rows;state.reviewed.clear();refreshPublication();render(); toast(`Předchozí export: ${state.previousRows.length} řádků. Data zůstávají v prohlížeči.`); }
+  try { const rows=await readCatalogFile(file);if(epoch!==state.inputEpoch||sequence!==state.previousRead)return;state.previousRows=rows;state.demoScenario=false;state.reviewed.clear();refreshPublication();render(); toast(`Předchozí export: ${state.previousRows.length} řádků. Data zůstávají v prohlížeči.`); }
   catch (error) { toast(`Import se nepodařil: ${error.message}`); }
   event.target.value = '';
 });
@@ -161,7 +162,7 @@ $('#catalog-file').addEventListener('change', async event => {
   const epoch=state.inputEpoch,sequence=++state.catalogRead;
   try {
     const rows = await readCatalogFile(file);if(epoch!==state.inputEpoch||sequence!==state.catalogRead)return;
-    state.rows = rows; state.isDemo = false; state.reviewed.clear(); state.market = 'ALL'; state.page = 1; state.findingPage = 1;
+    state.rows = rows; state.isDemo = false; state.demoScenario=false; state.reviewed.clear(); state.market = 'ALL'; state.page = 1; state.findingPage = 1;
     document.querySelectorAll('[data-market]').forEach(x => x.classList.toggle('active', x.dataset.market === 'ALL'));
     state.view = 'catalog';refreshPublication(); render(); toast(`Načteno ${rows.length} řádků. Data zůstávají v tomto prohlížeči.`);
   } catch (error) { toast(`Import se nepodařil: ${error.message}`); }
@@ -170,7 +171,7 @@ $('#catalog-file').addEventListener('change', async event => {
 $('#export-button').addEventListener('click', () => {
   const result = state.view === 'catalog' ? catalog() : orders();
   const { issues, ...summary } = result;
-  const data = { tool: 'Shop Ops Kit', demo: state.view === 'orders' || (state.isDemo&&state.previousRows===null), view: state.view, generatedAt: new Date().toISOString(), summary, rules:state.view==='catalog'?structuredClone(rules):null, publication:state.view==='catalog'&&state.publication?publicationReport(state.publication,state.decisions):null, issues: issues.map(issue => ({ ...issue, reviewed: state.reviewed.has(issue.id) })), catalogComparison: state.view === 'catalog' && state.previousRows ? compareCatalog(state.previousRows, state.rows) : null };
+  const data = { tool: 'Shop Ops Kit', demo: state.view === 'orders' || catalogIsDemo(), view: state.view, generatedAt: new Date().toISOString(), summary, rules:state.view==='catalog'?structuredClone(rules):null, publication:state.view==='catalog'&&state.publication?publicationReport(state.publication,state.decisions):null, issues: issues.map(issue => ({ ...issue, reviewed: state.reviewed.has(issue.id) })), catalogComparison: state.view === 'catalog' && state.previousRows ? compareCatalog(state.previousRows, state.rows) : null };
   const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }));
   const link = document.createElement('a'); link.href = url; link.download = `shop-ops-${state.view}-report.json`; link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
 });
@@ -235,3 +236,11 @@ document.querySelector('main').prepend(settings);
 render();
 
 $('#catalog-json').onclick=()=>downloadPublication('shop-ops-katalog.json',catalogJson(state.rows),'application/json');
+
+$('#demo-publication').onclick=()=>{
+ if((!catalogIsDemo()||state.decisions.size||state.reviewed.size||draftUI.hasWork())&&!confirm('Načtení ukázky nahradí aktuální katalog, předchozí export, prověření, rozhodnutí a textové návrhy. Chcete pokračovat? Předtím si můžete stáhnout report.'))return;
+ const sample=publicationDemo();state.inputEpoch++;state.rows=parseDelimited(sample.current);state.previousRows=parseDelimited(sample.previous);state.isDemo=true;state.demoScenario=true;state.reviewed.clear();state.view='catalog';state.market='ALL';state.page=1;state.findingPage=1;state.severity='all';
+ Object.assign(rules,sample.rules);shared.checked=true;threshold.value=String(rules.threshold);for(const [key,input] of marketInputs)input.checked=rules.expectedMarkets.includes(key);
+ document.querySelectorAll('[data-market]').forEach(button=>button.classList.toggle('active',button.dataset.market==='ALL'));document.querySelectorAll('[data-severity]').forEach(button=>button.classList.toggle('active',button.dataset.severity==='all'));
+ refreshPublication();render();$('#publication-panel').scrollIntoView({block:'start'});toast('Načteny dva fiktivní exporty. Tři změny čekají na vaše rozhodnutí.');
+};

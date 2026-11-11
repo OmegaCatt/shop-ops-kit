@@ -1,3 +1,7 @@
+# Ukázka 11. 11. 2026 – DEMO-4/6
+
+22 Node testů a tři browser sady: existující schvalování, JSON/návrhy a nový průchod tří změn. Nová sada ověřuje nulové předběžné schválení, skutečné rozhodnutí, blokovanou cenu, export jediné schválené položky, demo příznaky, potvrzení/zrušení při vlastních datech i textovém návrhu a mobil. Screenshoty demo-workflow.png a demo-mobile.png jsou z těchto skutečných akcí. Nejde o zápis do e-shopu. Přesná vzdálená evidence je v hlavním protokolu po publikaci.
+
 # Opakované ověření 10. 11. 2026
 
 **21 Node testů prošlo.** Znovu spuštěné prohlížečové QA ověřilo skutečný pracovní postup na dočasných fiktivních podkladech, desktop i mobil a JavaScript chyby. Nalezeno a opraveno: CSV hlavička _row mohla přepsat skutečný zdrojový řádek. Rezervované interní/prototypové názvy se odmítají. Nový regresní test nejprve selhal na původním kódu a po opravě prošel; browser potvrzuje odmítnutí a zachování předchozího platného katalogu. Původních 20 testů se rozšířilo na 21.

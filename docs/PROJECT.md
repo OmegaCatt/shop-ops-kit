@@ -1,3 +1,7 @@
+# Etapa ukázky 11. 11. 2026
+
+Jedním tlačítkem načtený pár fiktivních exportů: tři změny, nulové předběžné schválení, zachování vlastní práce při zrušení potvrzení. 22 testů a tři browser sady prošly, včetně zpožděného čtení souboru, které po přepnutí nesmí přepsat ukázku. Viz README a QA.
+
 # Aktuální rozsah a kontrola 10. 11. 2026
 
 Aktuální funkce, technologie, API, způsob použití, firemní zavedení a omezení jsou v [README](../README.md). Znovu prošlo 21 Node testů a odpovídající skutečný browser průchod desktop/mobil. Jde o fiktivní portfolio projekt. Výsledky a případné opravy jsou v [QA](QA.md).
