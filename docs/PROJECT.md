@@ -1,3 +1,7 @@
+# Snadné vyzkoušení - 12. 11. 2026
+
+Základní Windows návod je na začátku README; řešení potíží a volitelné předpoklady v docs/SPUSTENI.md. Netechnický návštěvník může začít existující veřejnou ukázkou. Ověření čisté kopie a hranice testu jsou v docs/QA.md. Jádro aplikace se touto dokumentační úpravou nemění.
+
 # UX-1 až UX-7 – 11. 11. 2026
 
 Značka SO a navigační SVG ikony mají pevné rozměry a zarovnání. Mobilní ikonová navigace má výslovné přístupné názvy.
