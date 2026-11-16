@@ -1,0 +1,130 @@
+{
+  "recordedAt": "2026-11-16T15:04:23.817Z",
+  "sourceCommit": "917afe86fd7dd73086076c7629514ec251f62d96",
+  "scriptSha256": "5906dfd3c37d8cbb510b6f6e5fbb392581945ffcb26bf8358655368379537456",
+  "helperSha256": "965b860d9ec7fb3d2a26c516544bc6e5d8cc331be3bd5de702eaed7b93dc1396",
+  "videoSha256": "db88a51b6d9aa0ac67833c22eb79bf0563dc6d614323ce1f072b33bfbeef4ee2",
+  "mode": "actual isolated local HTTP/browser; fictional data; AI disabled; silent Full HD app-only recording",
+  "presentation": {
+    "width": 1920,
+    "height": 1080,
+    "captionFontPixels": 42,
+    "burnedInCaptions": true,
+    "visiblePointer": true,
+    "actualClickMarkers": true,
+    "audio": false,
+    "trimStartSeconds": 0.6,
+    "renderedOverlay": {
+      "topLayer": true,
+      "pointer": true,
+      "fontSize": "42px",
+      "pointerSvg": {
+        "width": 36,
+        "height": 42,
+        "fill": "rgb(255, 255, 255)",
+        "stroke": "rgb(17, 24, 32)"
+      },
+      "clickMarker": {
+        "width": 68,
+        "height": 68,
+        "border": 4,
+        "color": "rgb(216, 136, 24)"
+      }
+    }
+  },
+  "verified": {
+    "changes": 3,
+    "blockedPriceCannotBeApproved": true,
+    "approvedExportRows": 1,
+    "excluded": [
+      "DOCK-1",
+      "KEY-1"
+    ],
+    "jsErrors": []
+  },
+  "captions": [
+    {
+      "start": 2.473,
+      "text": "Shop Ops Kit: kontrola změn katalogu.",
+      "end": 5.987
+    },
+    {
+      "start": 5.987,
+      "text": "Načteme tři změny katalogu a ověříme je před zveřejněním.",
+      "end": 8.144
+    },
+    {
+      "start": 8.144,
+      "text": "Tři skutečné změny: monitor, příliš vysoká cena stanice a neúplná klávesnice.",
+      "end": 12.161
+    },
+    {
+      "start": 12.161,
+      "text": "Chybnou cenu nelze schválit. Rozhodnutí musí vycházet z původních podkladů.",
+      "end": 16.202
+    },
+    {
+      "start": 16.202,
+      "text": "U změny monitoru doplníme důvod a potvrdíme schválení.",
+      "end": 20.233
+    },
+    {
+      "start": 20.233,
+      "text": "Změna monitoru je schválená. Chybná cena zůstává blokovaná.",
+      "end": 24.249
+    },
+    {
+      "start": 24.249,
+      "text": "Stáhneme seznam schválených změn.",
+      "end": 28.094
+    },
+    {
+      "start": 28.094,
+      "text": "CSV export obsahuje pouze jednu schválenou změnu monitoru.",
+      "end": 32.229
+    },
+    {
+      "start": 32.229,
+      "text": "Podrobný návod ke spuštění najdete v README projektu.",
+      "end": 36.234
+    }
+  ],
+  "actions": [
+    {
+      "kind": "click",
+      "target": "demo-publication",
+      "x": 517.2421875,
+      "y": 540.078125,
+      "captionPosition": "bottom",
+      "captionOverlapsTarget": false,
+      "at": 7.275
+    },
+    {
+      "kind": "fill",
+      "target": "Důvod MON-27|CZ",
+      "x": 824.203125,
+      "y": 540.25,
+      "captionPosition": "bottom",
+      "captionOverlapsTarget": false,
+      "at": 17.447
+    },
+    {
+      "kind": "click",
+      "target": "Schválit",
+      "x": 491.9921875,
+      "y": 540.25,
+      "captionPosition": "bottom",
+      "captionOverlapsTarget": false,
+      "at": 19.436
+    },
+    {
+      "kind": "click",
+      "target": "approved-csv",
+      "x": 513.96875,
+      "y": 540.25,
+      "captionPosition": "bottom",
+      "captionOverlapsTarget": false,
+      "at": 26.684
+    }
+  ]
+}

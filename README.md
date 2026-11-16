@@ -4,6 +4,14 @@
 
 Zkontroluje změny produktového katalogu a pustí do exportu jen schválené změny.
 
+### Video ukázka
+
+**[Přehrát video — 0:39, bez zvuku](https://raw.githubusercontent.com/OmegaCatt/shop-ops-kit/main/docs/videos/shop-ops-kit.mp4)** · [Co ukázka předvádí](docs/VIDEO.md)
+
+<a href="https://raw.githubusercontent.com/OmegaCatt/shop-ops-kit/main/docs/videos/shop-ops-kit.mp4"><img src="docs/videos/shop-ops-kit-poster.png" alt="Přehrát video aplikace Shop Ops Kit" width="720"></a>
+
+Skutečný průchod aplikací s českými titulky a viditelnou myší. Klikněte na náhled nebo odkaz nad ním; není potřeba nic instalovat. [Soubor MP4 na GitHubu](https://github.com/OmegaCatt/shop-ops-kit/blob/main/docs/videos/shop-ops-kit.mp4).
+
 **[Prohlédnout veřejnou ukázku](https://omegacatt.github.io/datadesk/portfolio/#shop-ops-kit)** - bez instalace a přihlášení.
 
 **[Otevřít živou aplikaci](https://omegacatt.github.io/shop-ops-kit/)** - můžete si ji rovnou vyzkoušet v prohlížeči.
