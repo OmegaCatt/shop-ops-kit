@@ -1,3 +1,7 @@
+# Mobilní značka a navigace — 25. 11. 2026
+
+Na šířce 320 px první navigační tlačítko před opravou začínalo přesně na spodní hraně loga SO (mezera 0 px). Po opravě je mezera 18 px a obě položky jsou soustředné. Skutečný browser průchod ověřil šířky 320, 390, 760, 1024 a 1440 px, zarovnání a nepřetékající stránku. Prošel také úplný `pnpm qa`, 22 Node testů, kontrola syntaxe a build. Vzhled se ověřuje i novou regresí `scripts/qa-rail-layout.mjs`. Kontrola se nevztahuje na všechny možné prohlížeče či obrazovky.
+
 # VID-9: samostatná video ukázka — 16. 11. 2026
 
 [Video, scénář a omezení](VIDEO.md). MP4 39.36 s, Full HD 1920×1080 / 25 fps, H.264/yuv420p, bez audio stopy, české titulky v obrazu, viditelná myš a zvýrazněná skutečná kliknutí. Zdrojový commit aplikace `917afe86fd7dd73086076c7629514ec251f62d96`; kontrolované výsledky a otisky jsou v [metadatech](videos/shop-ops-kit-recording.json).
