@@ -12,8 +12,6 @@ Zkontroluje změny produktového katalogu a pustí do exportu jen schválené zm
 
 Skutečný průchod aplikací s českými titulky a viditelnou myší. Kliknutím na náhled stáhnete video MP4; po stažení jej otevřete v běžném přehrávači videa. Samotnou aplikaci není potřeba instalovat. [Soubor MP4 na GitHubu](https://github.com/OmegaCatt/shop-ops-kit/blob/main/docs/videos/shop-ops-kit.mp4).
 
-**[Prohlédnout veřejnou ukázku](https://omegacatt.github.io/datadesk/portfolio/#shop-ops-kit)** - bez instalace a přihlášení.
-
 **[Otevřít živou aplikaci](https://omegacatt.github.io/shop-ops-kit/)** - můžete si ji rovnou vyzkoušet v prohlížeči.
 
 ## Spuštění krok za krokem (Windows)
@@ -50,7 +48,7 @@ Značka SO a navigační SVG ikony mají pevné rozměry a zarovnání. Mobilní
 
 **Kontrola produktového katalogu před publikací: zdrojové rozdíly, obchodní pravidla, schvalování a prověřené textové návrhy.**
 
-[Veřejná funkční aplikace](https://omegacatt.github.io/shop-ops-kit/) · [CI](https://github.com/OmegaCatt/shop-ops-kit/actions/workflows/ci.yml) · [Galerie portfolia](https://omegacatt.github.io/datadesk/portfolio/)
+[Veřejná funkční aplikace](https://omegacatt.github.io/shop-ops-kit/) · [CI](https://github.com/OmegaCatt/shop-ops-kit/actions/workflows/ci.yml)
 
 ![Schvalování změn](docs/workflow.png)
 
